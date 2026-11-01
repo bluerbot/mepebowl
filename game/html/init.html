@@ -9,6 +9,9 @@
 
     <!-- Dependencies -->
     <script type="text/javascript" charset="UTF-8" src="../../libs/three/three.js"></script>
+
+<script src="../../libs/three/loaders/GLTFLoader.js"></script>
+
     <script type="text/javascript" charset="UTF-8" src="../../libs/other/physijs/physi.js"></script>
     <script type="text/javascript" charset="UTF-8" src="../../libs/other/ThreeBSP.js"></script>
     <script type="text/javascript" charset="UTF-8" src="../../libs/three/controls/TrackballControls.js"></script>
@@ -70,7 +73,7 @@
             justify-content: center;
             pointer-events: auto;
         }
-        
+
         .menu-container {
             background: #111;
             border: 1px solid #333;
@@ -79,7 +82,7 @@
             width: 400px;
             text-align: center;
         }
-        
+
         .menu-title {
             font-size: 32px;
             font-weight: 800;
@@ -88,12 +91,12 @@
             letter-spacing: 2px;
             color: #fff;
         }
-        
+
         .menu-group {
             margin-bottom: 25px;
             text-align: left;
         }
-        
+
         .menu-label {
             display: block;
             font-size: 14px;
@@ -103,12 +106,12 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
+
         .btn-group {
             display: flex;
             gap: 10px;
         }
-        
+
         .option-btn {
             flex: 1;
             padding: 12px;
@@ -122,11 +125,11 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        
+
         .option-btn:hover {
             background: rgba(255, 255, 255, 0.1);
         }
-        
+
         .option-btn.selected {
             background: #fff;
             color: #000;
@@ -137,7 +140,7 @@
             width: 100%;
             margin-bottom: 5px;
         }
-        
+
         .range-val {
             text-align: center;
             font-size: 24px;
@@ -161,7 +164,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
+
         .start-btn:hover {
             background: #ddd;
         }
@@ -313,7 +316,7 @@
     <div id="start-menu">
         <div class="menu-container">
             <h1 class="menu-title">PRO BOWLING</h1>
-            
+
             <div class="menu-group">
                 <span class="menu-label">Players</span>
                 <div class="btn-group">
@@ -371,21 +374,36 @@
             document.getElementById('rounds-val').innerText = selectedRounds;
         }
 
+        // function startClicked() {
+        //     document.getElementById('start-menu').style.display = 'none';
+        //     document.getElementById('overhead-scoreboard').style.display = 'flex';
+        //
+        //     if (typeof initGame === 'function') {
+        //         initGame(selectedPlayers, selectedRounds);
+        //     }
+        // }
+
         function startClicked() {
-            document.getElementById('start-menu').style.display = 'none';
-            document.getElementById('overhead-scoreboard').style.display = 'flex';
-            
-            if (typeof initGame === 'function') {
+            let startButton = document.querySelector(".start-btn");
+
+            startButton.disabled = true;
+            startButton.innerText = "LOADING MEPE...";
+
+            loadMepeModel(function() {
+                document.getElementById('start-menu').style.display = 'none';
+                document.getElementById('overhead-scoreboard').style.display = 'flex';
+
                 initGame(selectedPlayers, selectedRounds);
-            }
+            });
         }
+
     </script>
 
     <!-- Game Logic Scripts (Strict Ordering) -->
     <script src="../js/Score.js?v=13"></script>
     <script src="../js/cameraLight.js?v=13"></script>
     <script src="../js/ball.js?v=13"></script>
-    <script src="../js/animation.js?v=13"></script>
+    <script src="../js/animation.js?v=14"></script>
     <script src="../js/pin.js?v=13"></script>
     <script src="../js/init.js?v=13"></script>
 

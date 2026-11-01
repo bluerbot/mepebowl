@@ -52,6 +52,11 @@ function distance(p1, p2) {
 }
 
 function throwBall(team, vx, vy, hookSpin) {
+
+
+  console.log("THROWBALL FUNCTION REACHED", team, vx, vy, hookSpin);
+
+
     let obj = team === 1 ? cyanBall : redBall;
     if (!obj) return;
 
@@ -60,6 +65,11 @@ function throwBall(team, vx, vy, hookSpin) {
 
     obj.setLinearVelocity(new THREE.Vector3(vx, vy, 0));
     obj.setAngularVelocity(new THREE.Vector3(0, -30, hookSpin));
+
+    console.log("Ball launch:", {
+        velocity: obj.getLinearVelocity(),
+        position: obj.position.clone()
+    });
 
     // Dynamic Physics Wait
     let animator = () => {
@@ -75,7 +85,7 @@ function throwBall(team, vx, vy, hookSpin) {
             let settleAnimator = () => {
                 evaluateTimer++;
                 let pm = team === 1 ? pm1 : pm2;
-                
+
                 if ((isPinsMoving(pm) && evaluateTimer < 240) || evaluateTimer < 30) {
                     return false;
                 }
@@ -86,6 +96,9 @@ function throwBall(team, vx, vy, hookSpin) {
                 obj.setLinearVelocity(new THREE.Vector3(0, 0, 0));
                 obj.setAngularVelocity(new THREE.Vector3(0, 0, 0));
                 obj.position.set(x0, y0, ballRadius);
+
+                obj.rotation.set(0, 0, 0);
+
                 obj.__dirtyPosition = true;
                 obj.__dirtyRotation = true;
 
@@ -101,7 +114,7 @@ function throwBall(team, vx, vy, hookSpin) {
                 setTimeout(() => {
                     isBallRolling[team] = false;
                 }, 1000);
-                
+
                 return true;
             };
             animators.push(settleAnimator);
@@ -123,26 +136,64 @@ function getNormalizedCoords(clientX, clientY) {
     return mouse;
 }
 
+// function handleSwipeStart(clientX, clientY) {
+//     let coords = getNormalizedCoords(clientX, clientY);
+//     raycaster.setFromCamera(coords, camera);
+//
+//     let ballMeshes = [];
+//     if (cyanBall) ballMeshes.push(cyanBall.children[0]);
+//     if (redBall) ballMeshes.push(redBall.children[0]);
+//
+//     let intersects = raycaster.intersectObjects(ballMeshes, false);
+//
+//     if (intersects.length > 0) {
+//         let hitObj = intersects[0].object.parent;
+//         if (hitObj === cyanBall) {
+//             if (isBallRolling[1]) return;
+//             activeTeam = 1;
+//         } else if (hitObj === redBall) {
+//             if (isBallRolling[2]) return;
+//             activeTeam = 2;
+//         }
+//
+//         isSwiping = true;
+//         swipeStartPos.set(clientX, clientY);
+//         swipeStartTime = performance.now();
+//         swipeMidPos.set(clientX, clientY);
+//     }
+// }
+
 function handleSwipeStart(clientX, clientY) {
+
+console.log("SWIPE START");
+
     let coords = getNormalizedCoords(clientX, clientY);
     raycaster.setFromCamera(coords, camera);
 
-    let ballMeshes = [];
-    if (cyanBall) ballMeshes.push(cyanBall.children[0]);
-    if (redBall) ballMeshes.push(redBall.children[0]);
-    
-    let intersects = raycaster.intersectObjects(ballMeshes, false);
-    
+    let ballBodies = [];
+    if (cyanBall) ballBodies.push(cyanBall);
+    if (redBall) ballBodies.push(redBall);
+
+    let intersects = raycaster.intersectObjects(ballBodies, true);
+
     if (intersects.length > 0) {
-        let hitObj = intersects[0].object.parent;
+        let hitObj = intersects[0].object;
+
+        // Walk up the GLTF hierarchy to find its physics body.
+        while (hitObj && hitObj !== cyanBall && hitObj !== redBall) {
+            hitObj = hitObj.parent;
+        }
+
         if (hitObj === cyanBall) {
             if (isBallRolling[1]) return;
             activeTeam = 1;
         } else if (hitObj === redBall) {
             if (isBallRolling[2]) return;
             activeTeam = 2;
+        } else {
+            return;
         }
-        
+
         isSwiping = true;
         swipeStartPos.set(clientX, clientY);
         swipeStartTime = performance.now();
@@ -150,9 +201,10 @@ function handleSwipeStart(clientX, clientY) {
     }
 }
 
+
 function handleSwipeMove(clientX, clientY) {
     if (!isSwiping) return;
-    
+
     let timeElapsed = performance.now() - swipeStartTime;
     if (timeElapsed > 50) {
         swipeMidPos.set(clientX, clientY);
@@ -160,6 +212,9 @@ function handleSwipeMove(clientX, clientY) {
 }
 
 function handleSwipeEnd(clientX, clientY) {
+
+console.log("SWIPE END", isSwiping, activeTeam);
+
     if (!isSwiping) return;
     isSwiping = false;
 
@@ -172,17 +227,17 @@ function handleSwipeEnd(clientX, clientY) {
     }
 
     let dx = swipeEndPos.x - swipeStartPos.x;
-    let dy = swipeEndPos.y - swipeStartPos.y; 
+    let dy = swipeEndPos.y - swipeStartPos.y;
     let dist2D = Math.sqrt(dx * dx + dy * dy);
-    
+
     if (dist2D < 50) {
         activeTeam = null;
         return;
     }
 
-    let speedMult = dist2D / timeDelta; 
-    let speedMagnitude = 20 * speedMult; 
-    
+    let speedMult = dist2D / timeDelta;
+    let speedMagnitude = 20 * speedMult;
+
     if (speedMagnitude > 50) speedMagnitude = 50;
     if (speedMagnitude < 10) speedMagnitude = 10;
 
@@ -192,11 +247,11 @@ function handleSwipeEnd(clientX, clientY) {
     rayEnd.setFromCamera(endCoords, camera);
     let groundPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -ballRadius);
     let worldEnd = new THREE.Vector3();
-    
+
     let obj = activeTeam === 1 ? cyanBall : redBall;
 
     if (!rayEnd.ray.intersectPlane(groundPlane, worldEnd)) {
-        let backWall = new THREE.Plane(new THREE.Vector3(1, 0, 0), 0); 
+        let backWall = new THREE.Plane(new THREE.Vector3(1, 0, 0), 0);
         if (!rayEnd.ray.intersectPlane(backWall, worldEnd)) {
             activeTeam = null;
             return;
@@ -205,7 +260,7 @@ function handleSwipeEnd(clientX, clientY) {
     }
 
     let dir3D = new THREE.Vector3().subVectors(worldEnd, obj.position);
-    
+
     if (dir3D.x > 0) {
         activeTeam = null;
         return;
@@ -219,12 +274,12 @@ function handleSwipeEnd(clientX, clientY) {
     let B = dx;
     let C = (swipeStartPos.x * swipeEndPos.y) - (swipeEndPos.x * swipeStartPos.y);
     let deviation = (A * swipeMidPos.x + B * swipeMidPos.y + C) / Math.sqrt(A*A + B*B);
-    
+
     let hookSpin = 0;
     if (Math.abs(deviation) > 15) {
         hookSpin = deviation * -0.4;
     }
-    
+
     if (hookSpin > 30) hookSpin = 30;
     if (hookSpin < -30) hookSpin = -30;
 

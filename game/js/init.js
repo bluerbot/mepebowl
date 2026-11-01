@@ -1,7 +1,7 @@
 Physijs.scripts.worker = '../../libs/other/physijs/physijs_worker.js';
 Physijs.scripts.ammo = 'ammo.js';
 
-let camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 100);
+let camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.1, 100);
 let scene = new Physijs.Scene({ fixedTimeStep: 1 / 60 });
 scene.setGravity(new THREE.Vector3( 0, 0, -50.0 ));
 let initialPinLayouts = [];
@@ -15,17 +15,17 @@ function buildLane(yOffset, floorMat, bumperMat) {
     let bumperLeft = new Physijs.BoxMesh(new THREE.BoxGeometry(60, 0.5, 0.5), bumperMat, 0);
     bumperLeft.position.set(24, yOffset - 3.25, 0.35);
     scene.add(bumperLeft);
-    
+
     let bumperRight = new Physijs.BoxMesh(new THREE.BoxGeometry(60, 0.5, 0.5), bumperMat, 0);
     bumperRight.position.set(24, yOffset + 3.25, 0.35);
     scene.add(bumperRight);
 
     let neonMat = new THREE.MeshBasicMaterial({ color: 0x00ffff });
-    
+
     let stripLeft = new THREE.Mesh(new THREE.BoxGeometry(60, 0.1, 0.1), neonMat);
     stripLeft.position.set(24, yOffset - 2.9, 0.15);
     scene.add(stripLeft);
-    
+
     let stripRight = new THREE.Mesh(new THREE.BoxGeometry(60, 0.1, 0.1), neonMat);
     stripRight.position.set(24, yOffset + 2.9, 0.15);
     scene.add(stripRight);
@@ -116,7 +116,7 @@ function initGame(players, rounds) {
     });
 
     document.getElementById("webgl").appendChild(renderer.domElement);
-    
+
     function renderAnim() {
         stats.update();
         scene.simulate();
