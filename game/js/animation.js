@@ -130,11 +130,21 @@ function addMeshToScene(obj) {
     scene.add(obj);
 }
 
+/*
 function getNormalizedCoords(clientX, clientY) {
     mouse.x = (clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(clientY / window.innerHeight) * 2 + 1;
     return mouse;
 }
+*/
+
+function getNormalizedCoords(clientX, clientY) {
+    let rect = document.getElementById("webgl").getBoundingClientRect();
+    mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+    return mouse;
+}
+
 
 // function handleSwipeStart(clientX, clientY) {
 //     let coords = getNormalizedCoords(clientX, clientY);
