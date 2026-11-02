@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="author" content="Lionel Garnier, Université de Bourgogne">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bowling 3D - Modernized</title>
+    <title>Mepe Bowl</title>
 
     <!-- Dependencies -->
     <script type="text/javascript" charset="UTF-8" src="../../libs/three/three.js"></script>
@@ -108,8 +108,9 @@
             background: #111;
             border: 1px solid #333;
             border-radius: 4px;
-            padding: 40px;
-            width: 400px;
+            padding: clamp(24px, 8vw, 40px);
+            width: min(400px, calc(100vw - 32px));
+            box-sizing: border-box;
             text-align: center;
         }
 
@@ -117,9 +118,17 @@
             font-size: 32px;
             font-weight: 800;
             margin-top: 0;
-            margin-bottom: 30px;
+            margin-bottom: 8px;
             letter-spacing: 2px;
             color: #fff;
+        }
+
+        .menu-tagline {
+            margin: 0 0 30px;
+            color: #00cfe8;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
         }
 
         .menu-group {
@@ -281,8 +290,8 @@
         #overhead-scoreboard {
             position: fixed;
             top: 0;
-            left: 0;
-            width: 100vw;
+            left: 50%;
+            width:min(100vw, 480px);
             background: rgba(0, 0, 0, 0.9);
             color: #fff;
             border-bottom: 1px solid #333;
@@ -292,7 +301,7 @@
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
             z-index: 200;
-            transform: scale(0.85);
+            transform: translateX(-50%) scale(0.85);
             transform-origin: top center;
         }
 
@@ -423,12 +432,13 @@
 
     <div id="start-menu">
         <div class="menu-container">
-            <h1 class="menu-title">PRO BOWLING</h1>
+            <h1 class="menu-title">MEPE BOWL</h1>
+            <p class="menu-tagline">THE NIGHT SHIFT STARTS HERE.</p>
 
             <div class="menu-group">
                 <span class="menu-label">Players</span>
                 <div class="btn-group">
-                    <button class="option-btn selected" id="btn-1p" onclick="selectPlayers(1)">1 Player</button>
+                    <button class="option-btn selected" id="btn-1p" disabled>IF YOU KNOW, YOU'RE AT THE RIGHT PLACE.</button>
                 </div>
             </div>
 
@@ -444,7 +454,8 @@
 
     <!-- UI -->
     <div class="ui-layer interactive">
-        <button id="menu-button" onclick="window.location.href = window.location.pathname">MENU</button>
+
+<button id="menu-button" onclick="handleMenuClick()">MENU</button>
 
         <div id="game-results">
             <div class="results-container">
@@ -459,7 +470,9 @@
         </div>
         <div id="overhead-scoreboard">
             <div class="team-row cyan-team" id="row-cyan">
-                <div class="team-name">CYAN</div>
+
+<div class="team-name" id="player-name">...</div>
+
                 <div class="frames" id="cyan-frames"></div>
                 <div class="total-score" id="cyan-total">0</div>
             </div>
@@ -492,20 +505,28 @@
             document.getElementById('rounds-val').innerText = selectedRounds;
         }
 
-        // function startClicked() {
-        //     document.getElementById('start-menu').style.display = 'none';
-        //     document.getElementById('overhead-scoreboard').style.display = 'flex';
-        //
-        //     if (typeof initGame === 'function') {
-        //         initGame(selectedPlayers, selectedRounds);
-        //     }
-        // }
+
+function handleMenuClick() {
+    const playerState = activeScoreboard.state.t1;
+
+    if (selectedRounds > 3 && !playerState.finished && playerState.currentFrame < 3) {
+        alert("PLAY 3 FRAMES TO EXIT");
+        return;
+    }
+
+    window.location.href = window.location.pathname;
+}
 
         function startClicked() {
             let startButton = document.querySelector(".start-btn");
 
             startButton.disabled = true;
             startButton.innerText = "LOADING MEPE...";
+
+
+const playerNames = ["Sleepy", "Clutz", "Hiroller", "Jacob", "Frog"];
+const playerName = playerNames[Math.floor(Math.random() * playerNames.length)];
+document.getElementById("player-name").textContent = playerName;
 
             loadMepeModel(function() {
                 document.getElementById('start-menu').style.display = 'none';
