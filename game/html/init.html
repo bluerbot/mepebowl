@@ -425,6 +425,85 @@
         .open-text {
             color: #ffffff !important;
         }
+        .credits-link {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 6px 12px;
+            border: 0;
+            background: transparent;
+            color: #888;
+            font-size: 11px;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .credits-link:hover {
+            color: #00cfe8;
+        }
+
+        #credits-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 700;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background: rgba(5, 8, 16, 0.88);
+        }
+
+        .credits-panel {
+            width: min(420px, 100%);
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 26px;
+            box-sizing: border-box;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background: #111;
+            color: #bbb;
+            text-align: left;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        .credits-panel h2 {
+            margin: 0 0 18px;
+            color: #fff;
+            font-size: 20px;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .credits-panel h3 {
+            margin: 18px 0 5px;
+            color: #00cfe8;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .credits-panel p {
+            margin: 4px 0;
+        }
+
+        .credits-panel a {
+            color: #00cfe8;
+            text-decoration: none;
+        }
+
+        .credits-close {
+            display: block;
+            margin: 22px auto 0;
+            padding: 9px 22px;
+            border: 1px solid #444;
+            border-radius: 3px;
+            background: #191919;
+            color: #fff;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
@@ -449,6 +528,28 @@
             </div>
 
             <button class="start-btn" onclick="startClicked()">PLAY NOW</button>
+            <button class="credits-link" onclick="showCredits()">CREDITS</button>
+        </div>
+    </div>
+
+    <div id="credits-overlay" onclick="if (event.target === this) hideCredits()">
+        <div class="credits-panel" role="dialog" aria-modal="true" aria-labelledby="credits-title">
+            <h2 id="credits-title">CREDITS</h2>
+
+            <h3>Original Bowling Game</h3>
+            <p>AHMIM Mohamed</p>
+            <p>RAMDANI Ferhat</p>
+            <p><a href="https://github.com/bluerbot/pro-bowling-3d" target="_blank" rel="noopener noreferrer">Pro Bowling 3D source project</a></p>
+
+            <h3>Character</h3>
+            <p>Mepe character — Mepe token on Solada.fun</p>
+
+            <h3>Technology</h3>
+            <p>Three.js · Physijs · Ammo.js · ThreeBSP</p>
+            <p>Stats.js — mrdoob</p>
+            <p>dat.GUI — Data Arts Team, Google Creative Lab</p>
+
+            <button class="credits-close" onclick="hideCredits()">CLOSE</button>
         </div>
     </div>
 
@@ -516,6 +617,14 @@ function handleMenuClick() {
 
     window.location.href = window.location.pathname;
 }
+
+        function showCredits() {
+            document.getElementById("credits-overlay").style.display = "flex";
+        }
+
+        function hideCredits() {
+            document.getElementById("credits-overlay").style.display = "none";
+        }
 
         function startClicked() {
             let startButton = document.querySelector(".start-btn");
