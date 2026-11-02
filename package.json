@@ -1,7 +1,7 @@
 {
-  "name": "pro-bowling-3d",
+  "name": "mepe-bowl",
   "version": "1.0.0",
-  "description": "A full 3D bowling lane running in the browser — real rigid-body physics for the ball and all ten pins, a swipe gesture that becomes an actual 3D throw with spin, and a retro synthwave lane to bowl on. No game engine, no build step: just THREE.js, a physics engine bolted on top, and vanilla JavaScript.",
+  "description": "Mepe Bowl WorldSphere application server.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
