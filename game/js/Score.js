@@ -2,6 +2,7 @@ class Scoreboard {
     constructor() {
         this.numPlayers = 2;
         this.numRounds = 10;
+        this.gameOverShown = false;
         this.state = {
             t1: this.createEmptyState(),
             t2: this.createEmptyState()
@@ -15,6 +16,7 @@ class Scoreboard {
     setup(players, rounds) {
         this.numPlayers = players;
         this.numRounds = rounds;
+        this.gameOverShown = false;
         this.state.t1 = this.createEmptyState();
         this.state.t2 = this.createEmptyState();
         
@@ -205,8 +207,15 @@ class Scoreboard {
         let allFinished = (this.numPlayers === 1 && this.state.t1.finished) || 
                           (this.numPlayers === 2 && this.state.t1.finished && this.state.t2.finished);
         
-        if (teamState.finished && allFinished) {
-            setTimeout(() => this.showBanner(`GAME OVER!`, 'open-text'), 2500);
+        if (teamState.finished && allFinished && !this.gameOverShown) {
+            this.gameOverShown = true;
+            setTimeout(() => {
+                this.showBanner('GAME OVER!', 'open-text');
+                setTimeout(() => {
+                    document.getElementById('final-score').textContent = teamState.score;
+                    document.getElementById('game-results').style.display = 'flex';
+                }, 2200);
+            }, 2500);
         }
 
         return result;

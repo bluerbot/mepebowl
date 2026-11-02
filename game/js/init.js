@@ -1,7 +1,9 @@
 Physijs.scripts.worker = '../../libs/other/physijs/physijs_worker.js';
 Physijs.scripts.ammo = 'ammo.js';
 
-let camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.1, 100);
+//let camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.1, 100);
+let camera = new THREE.PerspectiveCamera(20, 1, 0.1, 100);
+
 let scene = new Physijs.Scene({ fixedTimeStep: 1 / 60 });
 scene.setGravity(new THREE.Vector3( 0, 0, -50.0 ));
 let initialPinLayouts = [];
@@ -42,11 +44,18 @@ function initGame(players, rounds) {
     stats.domElement.style.top = '0px';
     document.body.appendChild(stats.domElement);
 
+let stage = document.getElementById("webgl");
+let stageRect = stage.getBoundingClientRect();
+camera.aspect = stageRect.width / stageRect.height;
+camera.updateProjectionMatrix();
+
     let renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    scene.background = new THREE.Color(0x0a001a);
+//renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(stageRect.width, stageRect.height);
+
+	scene.background = new THREE.Color(0x0a001a);
     scene.fog = new THREE.FogExp2(0x0a001a, 0.015);
 
     let grid = new THREE.GridHelper(400, 100, 0xff00ff, 0xff00ff);
@@ -56,11 +65,21 @@ function initGame(players, rounds) {
     grid.material.transparent = true;
     scene.add(grid);
 
+/*
     window.addEventListener('resize', function() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     }, false);
+*/
+
+window.addEventListener('resize', function() {
+    let rect = stage.getBoundingClientRect();
+    camera.aspect = rect.width / rect.height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(rect.width, rect.height);
+}, false);
+
 
     setupCamera(scene, camera);
     setupLighting(scene, players);
