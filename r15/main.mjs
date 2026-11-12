@@ -19,6 +19,82 @@ const sceneHost = new SceneHost({
 sceneHost.scene.background = null;
 
 let mepe = null;
+let leftMarker = null;
+let rightMarker = null;
+let settleTimer = null;
+let centerDeadZone = 0;
+
+
+function createMarkers(modelSize, modelScale) {
+  // Marker diameter is half the ball's approximate diameter.
+  const ballDiameter =
+    Math.max(modelSize.x, modelSize.y, modelSize.z) * modelScale;
+  // Marker diameter reduced by 20%.
+  const markerRadius = ballDiameter * 0.2;
+  // Half a marker diameter is the center dead zone.
+  centerDeadZone = markerRadius;
+  const markerGeometry = new THREE.CircleGeometry(
+    markerRadius,
+    32
+  );
+  const markerMaterial = new THREE.MeshBasicMaterial({
+    color: 0xd6b15e,
+    side: THREE.DoubleSide,
+    depthTest: true,
+    depthWrite: true
+  });
+
+  function makeMarker(x) {
+    const marker = new THREE.Mesh(
+      markerGeometry,
+      markerMaterial
+    );
+
+    marker.position.set(
+      x,
+      mepe.position.y + markerRadius,
+      mepe.position.z - 3*markerRadius
+    );
+
+    sceneHost.scene.add(marker);
+
+    return marker;
+  }
+
+  // Fixed center marker.
+  makeMarker(0);
+
+  // Configurable left and right markers.
+  leftMarker = makeMarker(0);
+  rightMarker = makeMarker(0);
+
+  leftMarker.visible = false;
+  rightMarker.visible = false;
+}
+
+function scheduleMarkerPlacement() {
+  if (settleTimer !== null) {
+    clearTimeout(settleTimer);
+  }
+
+  settleTimer = setTimeout(() => {
+    settleTimer = null;
+
+    if (!mepe || !leftMarker || !rightMarker) return;
+
+    const x = mepe.position.x;
+
+    // Center is reserved for the permanent center marker.
+    if (Math.abs(x) <= centerDeadZone) return;
+
+    // Update only the marker belonging to Mepe's side.
+    const marker = x < 0 ? leftMarker : rightMarker;
+
+    marker.position.x = x;
+    marker.visible = true;
+
+  }, 300);
+}
 
 function loadMepe() {
   const loader = new GLTFLoader();
@@ -55,6 +131,9 @@ function loadMepe() {
       });
 
       sceneHost.scene.add(mepe);
+
+      // Markers share Mepe's encounter plane.
+      createMarkers(size, scale);
     },
     undefined,
     (error) => {
@@ -89,7 +168,7 @@ function pointerToLaneX(event) {
 }
 
 function installLateralDrag() {
-  const limit = 0.8;
+  const limit = 1.2;
 
   let activePointer = null;
   let startPointerX = 0;
@@ -124,11 +203,18 @@ function installLateralDrag() {
 
     const deltaX = laneX - startPointerX;
 
-    mepe.position.x = THREE.MathUtils.clamp(
+    const nextX = THREE.MathUtils.clamp(
       startMepeX + deltaX,
       -limit,
       limit
     );
+
+    // Only meaningful movement resets the settling timer.
+    if (Math.abs(nextX - mepe.position.x) < 0.001) return;
+
+    mepe.position.x = nextX;
+
+    scheduleMarkerPlacement();
   }
 
   function onPointerEnd(event) {
@@ -153,5 +239,9 @@ loadMepe();
 installLateralDrag();
 
 window.addEventListener('pagehide', () => {
+  if (settleTimer !== null) {
+    clearTimeout(settleTimer);
+  }
+
   sceneHost.dispose();
 }, { once: true });
