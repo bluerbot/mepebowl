@@ -36,6 +36,28 @@
       background: #0a0e1a;
     }
 
+    #bowl-now {
+      position: absolute;
+      top: 8%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: inline-block;
+      padding: 12px 24px;
+      border: 1px solid #d6b15e;
+      border-radius: 4px;
+      background: #171d2b;
+      color: #f4dfad;
+      font: 600 14px/1 sans-serif;
+      letter-spacing: 0.12em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    #bowl-now:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 3px;
+    }
 
     #encounter {
       position: absolute;
@@ -45,29 +67,27 @@
       width: 100%;
       height: 33%;
       overflow: hidden;
-
       background-image: url('./assets/lanebg.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
     }
-
-
   </style>
 
   <script type="importmap">
     {
       "imports": {
         "three": "/node_modules/three/build/three.module.js",
-         "three/addons/": "/node_modules/three/examples/jsm/"
+        "three/addons/": "/node_modules/three/examples/jsm/"
       }
     }
   </script>
 </head>
 <body>
   <main id="stage">
-  <div id="encounter"></div>
-</main>
+    <a id="bowl-now" href="./lane22/index.html">BOWL NOW</a>
+    <div id="encounter"></div>
+  </main>
   <script type="module" src="./main.mjs"></script>
 </body>
 </html>
