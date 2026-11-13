@@ -83,10 +83,10 @@ const gutterOuterEdge = 3.5 + charcoalWidth - (2 * boardWidth);
     scene.add(gutterWallRight);
 }
 
-function initGame(players, rounds) {
+function initGame(players, rounds, startConfig) {
     setupScoreboard(players, rounds);
-    initBalls(players);
-
+    initBalls(players, startConfig);
+    
     let stats = new Stats();
     stats.setMode(0);
     stats.domElement.style.position = 'absolute';

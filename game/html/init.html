@@ -626,25 +626,39 @@ function handleMenuClick() {
             document.getElementById("credits-overlay").style.display = "none";
         }
 
-        function startClicked() {
+        async function startClicked() {
             let startButton = document.querySelector(".start-btn");
 
             startButton.disabled = true;
             startButton.innerText = "LOADING MEPE...";
 
+            try {
+                const { createStartConfig } =
+                    await import('../../r15/session/StartConfig.mjs');
 
-const playerNames = ["Sleepy", "Clutz", "Hiroller", "Jacob", "Frog"];
-const playerName = playerNames[Math.floor(Math.random() * playerNames.length)];
-document.getElementById("player-name").textContent = playerName;
+                const startConfig = createStartConfig();
+                window.startConfig = startConfig;
 
-            loadMepeModel(function() {
-                document.getElementById('start-menu').style.display = 'none';
-                document.getElementById('overhead-scoreboard').style.display = 'flex';
-                document.getElementById('menu-button').style.display = 'block';
+                const playerNames = ["Sleepy", "Clutz", "Hiroller", "Jacob", "Frog"];
+                const playerName = playerNames[
+                    Math.floor(Math.random() * playerNames.length)
+                ];
+                document.getElementById("player-name").textContent = playerName;
 
-                initGame(selectedPlayers, selectedRounds);
-            });
+                loadMepeModel(function() {
+                    document.getElementById('start-menu').style.display = 'none';
+                    document.getElementById('overhead-scoreboard').style.display = 'flex';
+                    document.getElementById('menu-button').style.display = 'block';
+
+                    initGame(selectedPlayers, selectedRounds, startConfig);
+                });
+            } catch (error) {
+                console.error('StartConfig initialization failed:', error);
+                startButton.disabled = false;
+                startButton.innerText = "BOWL NOW";
+            }
         }
+
 
     </script>
 

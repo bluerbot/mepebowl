@@ -85,87 +85,7 @@ function loadMepeModel(onLoad) {
 }
 
 
-// function createBall(x0, y0, ballColor, decorColor) {
-//
-//
-//     let visualGeom = getBowlingBallGeometry();
-//
-//
-//     let physMaterial = Physijs.createMaterial(
-//         new THREE.MeshBasicMaterial({ visible: false }),
-//         0.6,
-//         0.5
-//     );
-//
-//     let sphereG = new THREE.SphereGeometry(ballRadius, 32, 32);
-//     let ball = new Physijs.SphereMesh(sphereG, physMaterial, 7.0);
-//
-//     let visualMat = new THREE.MeshPhysicalMaterial({
-//         color: ballColor,
-//         roughness: 0.3,
-//         metalness: 0.1,
-//         clearcoat: 1.0,
-//         clearcoatRoughness: 0.05
-//     });
-//
-//     let visualMesh = new THREE.Mesh(visualGeom, visualMat);
-//     visualMesh.castShadow = true;
-//     visualMesh.receiveShadow = true;
-//
-//     let darkMat = new THREE.MeshStandardMaterial({
-//         color: 0x010101,
-//         roughness: 0.9,
-//         metalness: 0.1,
-//         side: THREE.BackSide
-//     });
-//
-//     let innerThumb = new THREE.Mesh(new THREE.CylinderGeometry(0.078, 0.058, 0.24, 16), darkMat);
-//     innerThumb.position.copy(thumbPos);
-//     innerThumb.rotation.copy(thumbRot);
-//     innerThumb.translateY(-0.08);
-//     visualMesh.add(innerThumb);
-//
-//     let innerFinger1 = new THREE.Mesh(new THREE.CylinderGeometry(0.053, 0.038, 0.24, 16), darkMat);
-//     innerFinger1.position.copy(finger1Pos);
-//     innerFinger1.rotation.copy(finger1Rot);
-//     innerFinger1.translateY(-0.08);
-//     visualMesh.add(innerFinger1);
-//
-//     let innerFinger2 = new THREE.Mesh(new THREE.CylinderGeometry(0.053, 0.038, 0.24, 16), darkMat);
-//     innerFinger2.position.copy(finger2Pos);
-//     innerFinger2.rotation.copy(finger2Rot);
-//     innerFinger2.translateY(-0.08);
-//     visualMesh.add(innerFinger2);
-//
-//     let rimThumb = new THREE.Mesh(new THREE.TorusGeometry(0.08, 0.008, 16, 32), visualMat);
-//     rimThumb.position.copy(thumbPos);
-//     rimThumb.rotation.copy(thumbRot);
-//     rimThumb.rotateX(Math.PI / 2);
-//     rimThumb.translateZ(0.08);
-//     visualMesh.add(rimThumb);
-//
-//     let rimFinger1 = new THREE.Mesh(new THREE.TorusGeometry(0.055, 0.008, 16, 32), visualMat);
-//     rimFinger1.position.copy(finger1Pos);
-//     rimFinger1.rotation.copy(finger1Rot);
-//     rimFinger1.rotateX(Math.PI / 2);
-//     rimFinger1.translateZ(0.065);
-//     visualMesh.add(rimFinger1);
-//
-//     let rimFinger2 = new THREE.Mesh(new THREE.TorusGeometry(0.055, 0.008, 16, 32), visualMat);
-//     rimFinger2.position.copy(finger2Pos);
-//     rimFinger2.rotation.copy(finger2Rot);
-//     rimFinger2.rotateX(Math.PI / 2);
-//     rimFinger2.translateZ(0.065);
-//     visualMesh.add(rimFinger2);
-//
-//     visualMesh.rotation.y = Math.PI / 2;
-//
-//     ball.add(visualMesh);
-//     ball.position.set(x0, y0, ballRadius);
-//
-//     return ball;
-// }
-function createBall(x0, y0, ballColor, decorColor) {
+function createBall(x0, y0, ballColor, decorColor, z0 = ballRadius) {
     let physMaterial = Physijs.createMaterial(
         new THREE.MeshBasicMaterial({ visible: false }),
         0.6,
@@ -185,8 +105,7 @@ function createBall(x0, y0, ballColor, decorColor) {
     });
 
     ball.add(visualMesh);
-    ball.position.set(x0, y0, ballRadius);
-
+    ball.position.set(x0, y0, z0);
     return ball;
 }
 
@@ -197,9 +116,18 @@ let team2Color = 0xff0022;
 let cyanBall = null;
 let redBall = null;
 
-function initBalls(players) {
+function initBalls(players, startConfig) {
     if (players === 1) {
-        cyanBall = createBall(45, 0, team1Color, 0xffffff);
+        const start = startConfig?.stance?.position
+            ?? { x: 45, y: 0, z: ballRadius };
+
+        cyanBall = createBall(
+            start.x,
+            start.y,
+            team1Color,
+            0xffffff,
+            start.z
+        );
     } else {
         cyanBall = createBall(45, -6, team1Color, 0xffffff);
         redBall = createBall(45, 6, team2Color, 0xffffff);
