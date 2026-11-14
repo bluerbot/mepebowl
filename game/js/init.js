@@ -86,7 +86,7 @@ const gutterOuterEdge = 3.5 + charcoalWidth - (2 * boardWidth);
 function initGame(players, rounds, startConfig) {
     setupScoreboard(players, rounds);
     initBalls(players, startConfig);
-    
+
     let stats = new Stats();
     stats.setMode(0);
     stats.domElement.style.position = 'absolute';
@@ -196,11 +196,38 @@ gui.domElement.style.display = "none";
 
     document.getElementById("webgl").appendChild(renderer.domElement);
 
-    function renderAnim() {
+
+    //
+    // REFACTOR for legibility - we are capturing startup;
+    // and handing it over the SceneHost for management.
+    // The decprecated function, renderAnim, was an actuator, which is fine;
+    // but we want to bring the actuator into some machinery.
+    startLaneFrameLoop({ stats, scene, renderer, camera });
+}
+
+
+function startLaneFrameLoop({ stats, scene, renderer, camera }) {
+    let frameId = null;
+    let running = true;
+
+    function renderFrame() {
+        if (!running) return;
+
         stats.update();
         scene.simulate();
         renderer.render(scene, camera);
-        requestAnimationFrame(renderAnim);
+
+        frameId = requestAnimationFrame(renderFrame);
     }
-    renderAnim();
+
+    renderFrame();
+
+    return function stopLaneFrameLoop() {
+        running = false;
+
+        if (frameId !== null) {
+            cancelAnimationFrame(frameId);
+            frameId = null;
+        }
+    };
 }
