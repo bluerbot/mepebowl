@@ -202,7 +202,24 @@ gui.domElement.style.display = "none";
     // and handing it over the SceneHost for management.
     // The decprecated function, renderAnim, was an actuator, which is fine;
     // but we want to bring the actuator into some machinery.
-    startLaneFrameLoop({ stats, scene, renderer, camera });
+    // startLaneFrameLoop({ stats, scene, renderer, camera });
+
+    const stopFrameLoop = startLaneFrameLoop({
+        stats,
+        scene,
+        renderer,
+        camera
+    });
+
+    return {
+        stage,
+        scene,
+        camera,
+        renderer,
+        stats,
+        startConfig,
+        stopFrameLoop
+    };
 }
 
 
