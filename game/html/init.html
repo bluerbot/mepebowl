@@ -602,7 +602,7 @@
     }
     </script>
 
-    
+
     <script>
         let selectedPlayers = 1;
         let selectedRounds = 10;
@@ -693,11 +693,16 @@ function handleMenuClick() {
     <script src="../js/init.js?v=13"></script>
 
     <script>
-        if (new URLSearchParams(window.location.search).get('replay') === '1') {
-            window.addEventListener('load', startClicked, { once: true });
-        }
-    </script>
+    const entryParams = new URLSearchParams(window.location.search);
+    const lane22Entry = entryParams.get('encounter') === 'lane22';
+    if (lane22Entry) {
+        document.title = 'Mepe Bowl — Lane 22';
+        document.querySelector('.menu-title').textContent = 'LANE 22';
+    }
 
+    if (lane22Entry || entryParams.get('replay') === '1') {
+        window.addEventListener('load', startClicked, { once: true });
+    }    </script>
 </body>
 
 </html>
