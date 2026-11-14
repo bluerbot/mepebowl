@@ -136,25 +136,12 @@ export class SceneHost {
 
     if (this.mounted) return this;
 
-    // // this.stage.appendChild(this.renderer.domElement);
-    // if (this.ownsRenderer) {
-    //   this.stage.appendChild(this.renderer.domElement);
-    // }
-    //
-    // this.resizeObserver = new ResizeObserver(() => {
-    //   this.resize();
-    // });
-    //
-    // this.resizeObserver.observe(this.stage);
-    //
-    // this.mounted = true;
-    // this.resize();
     if (this.ownsRenderer) {
+      this.stage.appendChild(this.renderer.domElement);
       this.resizeObserver = new ResizeObserver(() => this.resize());
       this.resizeObserver.observe(this.stage);
       this.resize();
-    }
-    this.mounted = true;
+    }    this.mounted = true;
 
     return this;
   }
