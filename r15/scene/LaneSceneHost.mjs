@@ -16,6 +16,7 @@ export class LaneSceneHost extends SceneHost {
       }
     });
 
+    this.ball = lane.ball;
     this.startConfig = lane.startConfig;
     this.stopFrameLoop = lane.stopFrameLoop;
     this.running = true;

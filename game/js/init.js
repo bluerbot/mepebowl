@@ -217,6 +217,7 @@ gui.domElement.style.display = "none";
         camera,
         renderer,
         stats,
+        ball: cyanBall,
         startConfig,
         stopFrameLoop
     };
