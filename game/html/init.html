@@ -650,7 +650,18 @@ function handleMenuClick() {
                     document.getElementById('overhead-scoreboard').style.display = 'flex';
                     document.getElementById('menu-button').style.display = 'block';
 
-                    initGame(selectedPlayers, selectedRounds, startConfig);
+                    const lane = initGame(
+                        selectedPlayers,
+                        selectedRounds,
+                        startConfig
+                    );
+                    import('../../r15/scene/LaneSceneHost.mjs')
+                        .then(({ LaneSceneHost }) => {
+                            window.laneSceneHost = new LaneSceneHost(lane);
+                        })
+                        .catch(error => {
+                            console.error('LaneSceneHost adoption failed:', error);
+                        });
                 });
             } catch (error) {
                 console.error('StartConfig initialization failed:', error);
