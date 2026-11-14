@@ -647,7 +647,21 @@ function handleMenuClick() {
                 const { createStartConfig } =
                     await import('../../r15/session/StartConfig.mjs');
 
-                const startConfig = createStartConfig();
+                // Lane 22 traversal stub — replace with session handoff later.
+                const sessionProfile = lane22Entry
+                    ? {
+                        version: 1,
+                        credentialed: true,
+                        markers: {
+                            center: 0,
+                            left: -0.7,
+                            right: 0.4
+                        }
+                    }
+                    : undefined;
+
+                const startConfig = createStartConfig(sessionProfile);
+
                 window.startConfig = startConfig;
 
                 const playerNames = ["Sleepy", "Clutz", "Hiroller", "Jacob", "Frog"];
