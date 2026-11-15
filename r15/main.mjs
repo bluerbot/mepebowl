@@ -2,6 +2,8 @@
 import { SceneHost } from './scene/SceneHost.mjs';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { credentialMarkers } from './session/SessionProfile.mjs';
+
 
 const stage = document.querySelector('#encounter');
 
@@ -233,10 +235,40 @@ function installLateralDrag() {
   stage.addEventListener('pointercancel', onPointerEnd);
 }
 
-sceneHost.mount().start();
+function installMarkerCredentialing() {
+  const bowlNow = document.querySelector('#bowl-now');
 
+  bowlNow.addEventListener('click', event => {
+    // Do not credential before both configurable markers exist.
+    if (
+      !leftMarker?.visible ||
+      !rightMarker?.visible ||
+      settleTimer !== null
+    ) {
+      event.preventDefault();
+      console.info('Place both markers before bowling.');
+      return;
+    }
+
+    const limit = 1.2;
+
+    credentialMarkers({
+      center: 0,
+      left: THREE.MathUtils.clamp(
+        leftMarker.position.x / limit, -1, 1
+      ),
+      right: THREE.MathUtils.clamp(
+        rightMarker.position.x / limit, -1, 1
+      )
+    });
+  });
+}
+
+
+sceneHost.mount().start();
 loadMepe();
 installLateralDrag();
+installMarkerCredentialing();
 
 window.addEventListener('pagehide', () => {
   if (settleTimer !== null) {
