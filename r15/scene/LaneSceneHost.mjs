@@ -27,6 +27,14 @@ export class LaneSceneHost extends SceneHost {
     this.mounted = true;
     this.manifestMarkers();
 
+    // Allow marker selection
+    this.onMarkerPointerUp = (event) => {
+      this.handleMarkerTap(event.clientX, event.clientY);
+    };
+    this.renderer.domElement.addEventListener(
+      'pointerup',
+      this.onMarkerPointerUp
+    );
   }
 
   manifestMarkers() {
@@ -62,6 +70,30 @@ export class LaneSceneHost extends SceneHost {
       this.scene.add(mesh);
       this.markerMeshes.push(mesh);
     }
+  }
+
+  handleMarkerTap(clientX, clientY) {
+    if (!this.markerMeshes?.length) return false;
+
+    const rect = this.renderer.domElement.getBoundingClientRect();
+
+    if (clientX < rect.left || clientX > rect.right ||
+        clientY < rect.top || clientY > rect.bottom) {
+      return false;
+    }
+
+    const pointer = new THREE.Vector2(
+      ((clientX - rect.left) / rect.width) * 2 - 1,
+      -((clientY - rect.top) / rect.height) * 2 + 1
+    );
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(pointer, this.camera);
+
+    const hits = raycaster.intersectObjects(this.markerMeshes, false);
+    if (!hits.length) return false;
+
+    return this.selectMarker(hits[0].object.userData.markerName);
   }
 
   selectMarker(markerName) {
@@ -118,6 +150,19 @@ export class LaneSceneHost extends SceneHost {
 
   dispose() {
     if (this.disposed) return;
+
+    // clear markers
+    this.renderer.domElement.removeEventListener(
+      'pointerup',
+      this.onMarkerPointerUp
+    );
+    for (const mesh of this.markerMeshes ?? []) {
+      this.scene.remove(mesh);
+      mesh.geometry.dispose();
+      mesh.material.dispose();
+    }
+    this.markerMeshes = [];
+
 
     this.stop();
     super.dispose();
