@@ -2,8 +2,10 @@
 import { SceneHost } from './scene/SceneHost.mjs';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { credentialMarkers } from './session/SessionProfile.mjs';
-
+import {
+  credentialMarkers,
+  readSessionProfile
+} from './session/SessionProfile.mjs';
 
 const stage = document.querySelector('#encounter');
 
@@ -79,7 +81,29 @@ function createMarkers(modelSize, modelScale) {
   waitingRight = makeMarker(1.7);
   // Move only the waiting coins farther up the visible lane.
   waitingLeft.position.z += 0.35;
-  waitingRight.position.z += 0.35;}
+  waitingRight.position.z += 0.35;
+}
+
+
+
+function restoreMarkers() {
+  const profile = readSessionProfile();
+
+  if (!profile.credentialed) return;
+
+  const limit = 1.2;
+
+  leftMarker.position.x = profile.markers.left * limit;
+  rightMarker.position.x = profile.markers.right * limit;
+
+  leftMarker.visible = true;
+  rightMarker.visible = true;
+
+  waitingLeft.visible = false;
+  waitingRight.visible = false;
+}
+
+
 
 function scheduleMarkerPlacement() {
   if (settleTimer !== null) {
@@ -149,6 +173,7 @@ function loadMepe() {
 
       // Markers share Mepe's encounter plane.
       createMarkers(size, scale);
+      restoreMarkers();
     },
     undefined,
     (error) => {
