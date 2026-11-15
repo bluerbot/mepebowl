@@ -25,6 +25,43 @@ export class LaneSceneHost extends SceneHost {
 
     // Legacy initGame already mounted the canvas and started the loop.
     this.mounted = true;
+    this.manifestMarkers();
+
+  }
+
+  manifestMarkers() {
+    const markers = this.startConfig?.markers;
+    if (!markers || !this.ball) return;
+
+    this.markerMeshes = [];
+
+    for (const name of ['center', 'left', 'right']) {
+      const marker = markers[name];
+
+      const mesh = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.22, 0.22, 0.025, 32),
+        new THREE.MeshBasicMaterial({
+          color: name === 'center' ? 0xffffff : 0x00e5ff,
+          transparent: true,
+          opacity: 0.85,
+          depthWrite: false
+        })
+      );
+
+      // Cylinder's default axis is Y; lane height is Z.
+      mesh.rotation.x = Math.PI / 2;
+
+      // Near the starting stance, sitting above lane surface.
+      mesh.position.set(
+        this.startConfig.stance.position.x - 0.8,
+        marker.y,
+        0.14
+      );
+
+      mesh.userData.markerName = name;
+      this.scene.add(mesh);
+      this.markerMeshes.push(mesh);
+    }
   }
 
   selectMarker(markerName) {
