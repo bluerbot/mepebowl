@@ -662,22 +662,6 @@ function handleResultsMenuClick() {
 
             try {
 
-                // const { createStartConfig } =
-                //     await import('../../r15/session/StartConfig.mjs');
-                //
-                // // Lane 22 traversal stub — replace with session handoff later.
-                // const sessionProfile = lane22Entry
-                //     ? {
-                //         version: 1,
-                //         credentialed: true,
-                //         markers: {
-                //             center: 0.0,
-                //             left: -0.7,
-                //             right: 0.4
-                //         }
-                //     }
-                //     : undefined;
-
                 // COnnecting marker placements to lane encounter.
                 const { createStartConfig } =
                     await import('../../r15/session/StartConfig.mjs');
@@ -737,16 +721,19 @@ function handleResultsMenuClick() {
     <script src="../js/init.js?v=13"></script>
 
     <script>
+
     const entryParams = new URLSearchParams(window.location.search);
     const lane22Entry = entryParams.get('encounter') === 'lane22';
     if (lane22Entry) {
         document.title = 'Mepe Bowl — Lane 22';
         document.querySelector('.menu-title').textContent = 'LANE 22';
+        document.getElementById('start-menu').style.display = 'none';
     }
-
     if (lane22Entry || entryParams.get('replay') === '1') {
         window.addEventListener('load', startClicked, { once: true });
-    }    </script>
+    }
+
+    </script>
 </body>
 
 </html>
