@@ -644,21 +644,34 @@ function handleMenuClick() {
             startButton.innerText = "LOADING MEPE...";
 
             try {
+
+                // const { createStartConfig } =
+                //     await import('../../r15/session/StartConfig.mjs');
+                //
+                // // Lane 22 traversal stub — replace with session handoff later.
+                // const sessionProfile = lane22Entry
+                //     ? {
+                //         version: 1,
+                //         credentialed: true,
+                //         markers: {
+                //             center: 0.0,
+                //             left: -0.7,
+                //             right: 0.4
+                //         }
+                //     }
+                //     : undefined;
+
+                // COnnecting marker placements to lane encounter.
                 const { createStartConfig } =
                     await import('../../r15/session/StartConfig.mjs');
 
-                // Lane 22 traversal stub — replace with session handoff later.
+                const { readSessionProfile } =
+                    await import('../../r15/session/SessionProfile.mjs');
+
                 const sessionProfile = lane22Entry
-                    ? {
-                        version: 1,
-                        credentialed: true,
-                        markers: {
-                            center: 0.0,
-                            left: -0.7,
-                            right: 0.4
-                        }
-                    }
+                    ? readSessionProfile()
                     : undefined;
+
 
                 const startConfig = createStartConfig(sessionProfile);
 
