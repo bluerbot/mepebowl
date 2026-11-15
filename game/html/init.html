@@ -567,7 +567,7 @@
                 <div class="results-score" id="final-score">0</div>
                 <div class="results-actions">
                     <button onclick="window.location.href = window.location.pathname + '?replay=1'">PLAY AGAIN</button>
-                    <button onclick="window.location.href = window.location.pathname">MENU</button>
+                    <button onclick="handleResultsMenuClick()">MENU</button>
                 </div>
             </div>
         </div>
@@ -628,8 +628,23 @@ function handleMenuClick() {
         return;
     }
 
-    window.location.href = window.location.pathname;
+    if (lane22Entry) {
+        window.top.location.href = '/r15/';
+    } else {
+        window.location.href = window.location.pathname;
+    }
 }
+
+function handleResultsMenuClick() {
+    if (lane22Entry) {
+        window.top.location.href = '/r15/';
+    } else {
+        window.location.href = window.location.pathname;
+    }
+}
+
+
+
 
         function showCredits() {
             document.getElementById("credits-overlay").style.display = "flex";
