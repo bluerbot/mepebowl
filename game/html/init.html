@@ -5,6 +5,16 @@
     <meta charset="utf-8">
     <meta name="author" content="Lionel Garnier, Université de Bourgogne">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <script>
+        if (new URLSearchParams(location.search).get('encounter') === 'lane22') {
+            document.documentElement.classList.add('lane22-entry');
+        }
+    </script>
+
+
     <title>Mepe Bowl</title>
 
     <!-- Dependencies -->
@@ -102,6 +112,10 @@
             align-items: center;
             justify-content: center;
             pointer-events: auto;
+        }
+
+        .lane22-entry #start-menu {
+            display: none;
         }
 
         .menu-container {
