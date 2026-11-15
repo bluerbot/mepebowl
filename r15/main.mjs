@@ -23,6 +23,8 @@ sceneHost.scene.background = null;
 let mepe = null;
 let leftMarker = null;
 let rightMarker = null;
+let waitingLeft = null;
+let waitingRight = null;
 let settleTimer = null;
 let centerDeadZone = 0;
 
@@ -72,7 +74,12 @@ function createMarkers(modelSize, modelScale) {
 
   leftMarker.visible = false;
   rightMarker.visible = false;
-}
+  // Two unplaced coins resting beside the approach.
+  waitingLeft = makeMarker(-1.7);
+  waitingRight = makeMarker(1.7);
+  // Move only the waiting coins farther up the visible lane.
+  waitingLeft.position.z += 0.35;
+  waitingRight.position.z += 0.35;}
 
 function scheduleMarkerPlacement() {
   if (settleTimer !== null) {
@@ -94,6 +101,12 @@ function scheduleMarkerPlacement() {
 
     marker.position.x = x;
     marker.visible = true;
+
+    if (x < 0) {
+      waitingLeft.visible = false;
+    } else {
+      waitingRight.visible = false;
+    }
 
   }, 300);
 }
