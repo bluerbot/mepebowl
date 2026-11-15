@@ -1,4 +1,6 @@
 import { SceneHost } from './SceneHost.mjs';
+import { selectStartMarker } from '../session/StartConfig.mjs';
+
 
 export class LaneSceneHost extends SceneHost {
   constructor(lane) {
@@ -23,6 +25,42 @@ export class LaneSceneHost extends SceneHost {
 
     // Legacy initGame already mounted the canvas and started the loop.
     this.mounted = true;
+  }
+
+  selectMarker(markerName) {
+    if (this.disposed || !this.running) {
+      return false;
+    }
+
+    if (!this.startConfig?.selection?.credentialed) {
+      return false;
+    }
+
+    // Legacy throw/settlement lifecycle owns this state.
+    if (typeof isBallRolling !== 'undefined' &&
+        isBallRolling[1]) {
+      return false;
+    }
+
+    if (!this.ball) {
+      return false;
+    }
+
+    const next = selectStartMarker(this.startConfig, markerName);
+    const position = next.stance.position;
+
+    this.ball.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+    this.ball.setAngularVelocity(new THREE.Vector3(0, 0, 0));
+
+    this.ball.position.set(position.x, position.y, position.z);
+    this.ball.rotation.set(0, 0, 0);
+
+    this.ball.__dirtyPosition = true;
+    this.ball.__dirtyRotation = true;
+
+    this.startConfig = next;
+
+    return true;
   }
 
   start() {
