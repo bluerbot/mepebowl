@@ -580,7 +580,7 @@
                 <div>FINAL SCORE</div>
                 <div class="results-score" id="final-score">0</div>
                 <div class="results-actions">
-                    <button onclick="window.location.href = window.location.pathname + '?replay=1'">PLAY AGAIN</button>
+                    <button onclick="window.location.href = window.location.pathname + (lane22Entry ? '?encounter=lane22&replay=1' : '?replay=1')">PLAY AGAIN</button>
                     <button onclick="handleResultsMenuClick()">MENU</button>
                 </div>
             </div>
