@@ -1,0 +1,625 @@
+work|$ 
+work|$ 
+work|$ 
+work|$ 
+work|$ 
+work|$ OUT="$HOME/worldsphere-residue-inventory-$(date +%Y%m%d-%H%M%S).txt"
+
+{
+  echo "=== WORLDSphere RESIDUE INVENTORY ==="
+  date -Is
+  echo "Host: $(hostname)"
+  echo "User: $(whoami)"
+  echo "Root: /var/www/worldsphere"
+
+  echo
+  echo "=== WORKTREE STATUS ==="
+  for d in pro-bowling-3d integration release-1 staging; do
+    echo "--- $d ---"
+    git -C "/var/www/worldsphere/$d" status --short --branch --untracked-files=all
+  done
+
+  echo
+  echo "=== GIT STASHES ==="
+  git -C /var/www/worldsphere/pro-bowling-3d stash list --date=iso
+  git -C /var/www/worldsphere/pro-bowling-3d stash show --stat --include-untracked 'stash@{0}'
+
+  echo
+  echo "=== TOP-LEVEL WORLDSPHERE CONTENTS ==="
+  ls -la /var/www/worldsphere
+
+  echo
+  echo "=== STAGING RESIDUE ==="
+  find /var/www/worldsphere/staging -maxdepth 3 -type f \
+    -printf '%p | %s bytes | %TY-%Tm-%Td %TH:%TM:%TS\n' | sort
+
+  echo
+  echo "=== LIVE REPO RESIDUE ==="
+  find /var/www/worldsphere/pro-bowling-3d -maxdepth 2 -type f \
+    \( -path '*/temp/*' -o -name 'review__init__html.dat' \) \
+    -printf '%p | %s bytes | %TY-%Tm-%Td %TH:%TM:%TS\n' | sort
+
+  echo
+  echo "=== HISTORY DIRECTORY ==="
+  find /var/www/worldsphere/history -maxdepth 2 -type f \
+    -printf '%p | %s bytes | %TY-%Tm-%Td %TH:%TM:%TS\n' 2>/dev/null | sort
+
+  echo
+echo "INVENTORY SAVED: $OUT"es-available/default*0219/"
+=== WORLDSphere RESIDUE INVENTORY ===
+2026-11-11T19:15:46+00:00
+Host: worldsphere0
+User: mainsphere
+Root: /var/www/worldsphere
+
+=== WORKTREE STATUS ===
+--- pro-bowling-3d ---
+## framework
+?? review__init__html.dat
+?? temp/shot1.png
+--- integration ---
+## dev...origin/dev
+--- release-1 ---
+## release/1
+--- staging ---
+## staging...origin/staging
+?? monitor/server.js
+?? monitor/server.js.bak
+?? temp/__19970__.png
+?? temp/__19975__.png
+?? temp/__19978__.png
+?? temp/shot1.png
+?? temp/shot2.png
+?? temp/shot3.png
+?? temp/shot4.png
+?? temp/shot5.png
+?? temp/shot6.png
+?? temp/shot7.png
+?? temp/shot8.png
+
+=== GIT STASHES ===
+stash@{2026-11-02 05:32:33 +0000}: On nodejsenabled: preserve server archive before branch transition
+ __server__.js.archive.dat | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+=== TOP-LEVEL WORLDSPHERE CONTENTS ===
+total 28
+drwxr-xr-x 7 mainsphere mainsphere 4096 Nov  9 06:08 .
+drwxr-xr-x 4 root       root       4096 Nov  1 09:49 ..
+drwxrwxr-x 2 mainsphere mainsphere 4096 Nov  4 18:13 history
+drwxrwxr-x 5 mainsphere mainsphere 4096 Nov  5 22:16 integration
+drwxrwxr-x 8 mainsphere mainsphere 4096 Nov  9 06:08 pro-bowling-3d
+drwxrwxr-x 6 mainsphere mainsphere 4096 Nov  5 22:24 release-1
+drwxrwxr-x 8 mainsphere mainsphere 4096 Nov 11 08:04 staging
+
+=== STAGING RESIDUE ===
+/var/www/worldsphere/staging/.agents/AGENTS.md | 1113 bytes | 2026-11-05 22:30:54.1489855690
+/var/www/worldsphere/staging/.git | 67 bytes | 2026-11-05 22:30:54.1429850890
+/var/www/worldsphere/staging/.gitattributes | 12 bytes | 2026-11-05 22:30:54.1489855690
+/var/www/worldsphere/staging/.gitignore | 29 bytes | 2026-11-05 22:30:54.1489855690
+/var/www/worldsphere/staging/README.md | 4965 bytes | 2026-11-05 22:30:54.1489855690
+/var/www/worldsphere/staging/game/html/init.html | 18081 bytes | 2026-11-05 22:30:54.1499856500
+/var/www/worldsphere/staging/game/js/Score.js | 9633 bytes | 2026-11-05 22:30:54.1499856500
+/var/www/worldsphere/staging/game/js/animation.js | 9384 bytes | 2026-11-05 22:30:54.1499856500
+/var/www/worldsphere/staging/game/js/ball.js | 6471 bytes | 2026-11-05 22:30:54.1499856500
+/var/www/worldsphere/staging/game/js/cameraLight.js | 1611 bytes | 2026-11-05 22:30:54.1499856500
+/var/www/worldsphere/staging/game/js/init.js | 6960 bytes | 2026-11-05 22:30:54.1499856500
+/var/www/worldsphere/staging/game/js/pin.js | 4652 bytes | 2026-11-05 22:30:54.1499856500
+/var/www/worldsphere/staging/game/models/__19797__meperoll__1101063731.glb | 18287572 bytes | 2026-11-05 22:30:54.3119986150
+/var/www/worldsphere/staging/game/models/mepe-bowling.glb | 18287572 bytes | 2026-11-05 22:30:54.5240155830
+/var/www/worldsphere/staging/libs/other/ThreeBSP.js | 17682 bytes | 2026-11-05 22:30:54.5260157430
+/var/www/worldsphere/staging/libs/other/Tween.min.js | 5802 bytes | 2026-11-05 22:30:54.5270158230
+/var/www/worldsphere/staging/libs/other/chroma.js | 25881 bytes | 2026-11-05 22:30:54.5270158230
+/var/www/worldsphere/staging/libs/other/d3-threeD.js | 20195 bytes | 2026-11-05 22:30:54.5270158230
+/var/www/worldsphere/staging/libs/other/gunzip.min.js | 12382 bytes | 2026-11-05 22:30:54.5330163030
+/var/www/worldsphere/staging/libs/other/inflate.min.js | 6980 bytes | 2026-11-05 22:30:54.5330163030
+/var/www/worldsphere/staging/libs/other/jszip.min.js | 75490 bytes | 2026-11-05 22:30:54.5330163030
+/var/www/worldsphere/staging/libs/other/perlin.js | 14801 bytes | 2026-11-05 22:30:54.5410169430
+/var/www/worldsphere/staging/libs/three/three.js | 1104363 bytes | 2026-11-05 22:30:54.5740195840
+/var/www/worldsphere/staging/libs/util/Stats.js | 3541 bytes | 2026-11-05 22:30:54.5780199040
+/var/www/worldsphere/staging/libs/util/dat.gui.js | 186643 bytes | 2026-11-05 22:30:54.5800200640
+/var/www/worldsphere/staging/libs/util/olddat.gui.js | 186643 bytes | 2026-11-05 22:30:54.5820202240
+/var/www/worldsphere/staging/libs/util/util.js | 20244 bytes | 2026-11-05 22:30:54.5820202240
+/var/www/worldsphere/staging/monitor/server.js | 11320 bytes | 2026-11-11 08:22:48.1920455090
+/var/www/worldsphere/staging/monitor/server.js.bak | 8806 bytes | 2026-11-11 08:04:28.9153265240
+/var/www/worldsphere/staging/node_modules/.package-lock.json | 29788 bytes | 2026-11-05 22:34:19.4443930450
+/var/www/worldsphere/staging/node_modules/accepts/HISTORY.md | 5218 bytes | 2026-11-05 22:34:19.3003815490
+/var/www/worldsphere/staging/node_modules/accepts/LICENSE | 1167 bytes | 2026-11-05 22:34:19.2623785150
+/var/www/worldsphere/staging/node_modules/accepts/README.md | 4122 bytes | 2026-11-05 22:34:19.3083821870
+/var/www/worldsphere/staging/node_modules/accepts/index.js | 5253 bytes | 2026-11-05 22:34:19.2773797120
+/var/www/worldsphere/staging/node_modules/accepts/package.json | 1157 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/body-parser/LICENSE | 1172 bytes | 2026-11-05 22:34:19.2613784350
+/var/www/worldsphere/staging/node_modules/body-parser/README.md | 21898 bytes | 2026-11-05 22:34:19.3963892130
+/var/www/worldsphere/staging/node_modules/body-parser/index.js | 976 bytes | 2026-11-05 22:34:19.2773797120
+/var/www/worldsphere/staging/node_modules/body-parser/package.json | 1560 bytes | 2026-11-05 22:34:19.3903887340
+/var/www/worldsphere/staging/node_modules/bytes/History.md | 1775 bytes | 2026-11-05 22:34:19.3003815490
+/var/www/worldsphere/staging/node_modules/bytes/LICENSE | 1153 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/bytes/Readme.md | 4770 bytes | 2026-11-05 22:34:19.3083821870
+/var/www/worldsphere/staging/node_modules/bytes/index.js | 3613 bytes | 2026-11-05 22:34:19.2763796330
+/var/www/worldsphere/staging/node_modules/bytes/package.json | 959 bytes | 2026-11-05 22:34:19.2903807500
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/.eslintrc | 232 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/.nycrc | 139 bytes | 2026-11-05 22:34:19.2763796330
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/CHANGELOG.md | 1938 bytes | 2026-11-05 22:34:19.3573860990
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2893806710
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/README.md | 2330 bytes | 2026-11-05 22:34:19.3633865780
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/actualApply.d.ts | 23 bytes | 2026-11-05 22:34:19.3663868180
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/actualApply.js | 280 bytes | 2026-11-05 22:34:19.2993814690
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/applyBind.d.ts | 614 bytes | 2026-11-05 22:34:19.3683869780
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/applyBind.js | 264 bytes | 2026-11-05 22:34:19.3073821080
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/functionApply.d.ts | 34 bytes | 2026-11-05 22:34:19.3703871370
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/functionApply.js | 99 bytes | 2026-11-05 22:34:19.3163828260
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/functionCall.d.ts | 33 bytes | 2026-11-05 22:34:19.3733873770
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/functionCall.js | 97 bytes | 2026-11-05 22:34:19.3233833850
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/index.d.ts | 2226 bytes | 2026-11-05 22:34:19.3753875360
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/index.js | 511 bytes | 2026-11-05 22:34:19.3293838640
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/package.json | 2480 bytes | 2026-11-05 22:34:19.3493854610
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/reflectApply.d.ts | 82 bytes | 2026-11-05 22:34:19.3763876160
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/reflectApply.js | 132 bytes | 2026-11-05 22:34:19.3413848220
+/var/www/worldsphere/staging/node_modules/call-bind-apply-helpers/tsconfig.json | 115 bytes | 2026-11-05 22:34:19.3543858600
+/var/www/worldsphere/staging/node_modules/call-bound/.eslintrc | 138 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/call-bound/.nycrc | 139 bytes | 2026-11-05 22:34:19.2753795530
+/var/www/worldsphere/staging/node_modules/call-bound/CHANGELOG.md | 2880 bytes | 2026-11-05 22:34:19.3343842630
+/var/www/worldsphere/staging/node_modules/call-bound/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2893806710
+/var/www/worldsphere/staging/node_modules/call-bound/README.md | 1897 bytes | 2026-11-05 22:34:19.3383845820
+/var/www/worldsphere/staging/node_modules/call-bound/index.d.ts | 4651 bytes | 2026-11-05 22:34:19.3413848220
+/var/www/worldsphere/staging/node_modules/call-bound/index.js | 687 bytes | 2026-11-05 22:34:19.2993814690
+/var/www/worldsphere/staging/node_modules/call-bound/package.json | 2507 bytes | 2026-11-05 22:34:19.3233833850
+/var/www/worldsphere/staging/node_modules/call-bound/tsconfig.json | 137 bytes | 2026-11-05 22:34:19.3293838640
+/var/www/worldsphere/staging/node_modules/content-disposition/LICENSE | 1094 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/content-disposition/README.md | 6796 bytes | 2026-11-05 22:34:19.3403847420
+/var/www/worldsphere/staging/node_modules/content-disposition/package.json | 1187 bytes | 2026-11-05 22:34:19.2993814690
+/var/www/worldsphere/staging/node_modules/content-type/LICENSE | 1089 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/content-type/README.md | 2532 bytes | 2026-11-05 22:34:19.3373845030
+/var/www/worldsphere/staging/node_modules/content-type/package.json | 1126 bytes | 2026-11-05 22:34:19.2993814690
+/var/www/worldsphere/staging/node_modules/cookie-signature/History.md | 1481 bytes | 2026-11-05 22:34:19.2993814690
+/var/www/worldsphere/staging/node_modules/cookie-signature/LICENSE | 1124 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/cookie-signature/Readme.md | 427 bytes | 2026-11-05 22:34:19.3073821080
+/var/www/worldsphere/staging/node_modules/cookie-signature/index.js | 1413 bytes | 2026-11-05 22:34:19.2753795530
+/var/www/worldsphere/staging/node_modules/cookie-signature/package.json | 548 bytes | 2026-11-05 22:34:19.2883805910
+/var/www/worldsphere/staging/node_modules/cookie/LICENSE | 1175 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/cookie/README.md | 11769 bytes | 2026-11-05 22:34:19.3073821080
+/var/www/worldsphere/staging/node_modules/cookie/SECURITY.md | 1180 bytes | 2026-11-05 22:34:19.3223833050
+/var/www/worldsphere/staging/node_modules/cookie/index.js | 8166 bytes | 2026-11-05 22:34:19.2753795530
+/var/www/worldsphere/staging/node_modules/cookie/package.json | 1092 bytes | 2026-11-05 22:34:19.2893806710
+/var/www/worldsphere/staging/node_modules/debug/LICENSE | 1139 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/debug/README.md | 22115 bytes | 2026-11-05 22:34:19.3543858600
+/var/www/worldsphere/staging/node_modules/debug/package.json | 1479 bytes | 2026-11-05 22:34:19.3483853810
+/var/www/worldsphere/staging/node_modules/depd/History.md | 2256 bytes | 2026-11-05 22:34:19.2733793930
+/var/www/worldsphere/staging/node_modules/depd/LICENSE | 1094 bytes | 2026-11-05 22:34:19.3153827460
+/var/www/worldsphere/staging/node_modules/depd/Readme.md | 9988 bytes | 2026-11-05 22:34:19.3223833050
+/var/www/worldsphere/staging/node_modules/depd/index.js | 10932 bytes | 2026-11-05 22:34:19.2983813890
+/var/www/worldsphere/staging/node_modules/depd/package.json | 1335 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/dunder-proto/.eslintrc | 43 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/dunder-proto/.nycrc | 216 bytes | 2026-11-05 22:34:19.2733793930
+/var/www/worldsphere/staging/node_modules/dunder-proto/CHANGELOG.md | 1547 bytes | 2026-11-05 22:34:19.3573860990
+/var/www/worldsphere/staging/node_modules/dunder-proto/LICENSE | 1073 bytes | 2026-11-05 22:34:19.2883805910
+/var/www/worldsphere/staging/node_modules/dunder-proto/README.md | 1907 bytes | 2026-11-05 22:34:19.3623864980
+/var/www/worldsphere/staging/node_modules/dunder-proto/get.d.ts | 121 bytes | 2026-11-05 22:34:19.3663868180
+/var/www/worldsphere/staging/node_modules/dunder-proto/get.js | 980 bytes | 2026-11-05 22:34:19.2993814690
+/var/www/worldsphere/staging/node_modules/dunder-proto/package.json | 2108 bytes | 2026-11-05 22:34:19.3513856200
+/var/www/worldsphere/staging/node_modules/dunder-proto/set.d.ts | 144 bytes | 2026-11-05 22:34:19.3683869780
+/var/www/worldsphere/staging/node_modules/dunder-proto/set.js | 1276 bytes | 2026-11-05 22:34:19.3373845030
+/var/www/worldsphere/staging/node_modules/dunder-proto/tsconfig.json | 116 bytes | 2026-11-05 22:34:19.3543858600
+/var/www/worldsphere/staging/node_modules/ee-first/LICENSE | 1099 bytes | 2026-11-05 22:34:19.2883805910
+/var/www/worldsphere/staging/node_modules/ee-first/README.md | 2617 bytes | 2026-11-05 22:34:19.2733793930
+/var/www/worldsphere/staging/node_modules/ee-first/index.js | 1684 bytes | 2026-11-05 22:34:19.2983813890
+/var/www/worldsphere/staging/node_modules/ee-first/package.json | 859 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/encodeurl/LICENSE | 1089 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/encodeurl/README.md | 3978 bytes | 2026-11-05 22:34:19.2983813890
+/var/www/worldsphere/staging/node_modules/encodeurl/index.js | 1438 bytes | 2026-11-05 22:34:19.2733793930
+/var/www/worldsphere/staging/node_modules/encodeurl/package.json | 1077 bytes | 2026-11-05 22:34:19.2883805910
+/var/www/worldsphere/staging/node_modules/es-define-property/.eslintrc | 144 bytes | 2026-11-05 22:34:19.2553779560
+/var/www/worldsphere/staging/node_modules/es-define-property/.nycrc | 139 bytes | 2026-11-05 22:34:19.2733793930
+/var/www/worldsphere/staging/node_modules/es-define-property/CHANGELOG.md | 2296 bytes | 2026-11-05 22:34:19.3333841830
+/var/www/worldsphere/staging/node_modules/es-define-property/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2873805110
+/var/www/worldsphere/staging/node_modules/es-define-property/README.md | 2056 bytes | 2026-11-05 22:34:19.3403847420
+/var/www/worldsphere/staging/node_modules/es-define-property/index.d.ts | 93 bytes | 2026-11-05 22:34:19.3483853810
+/var/www/worldsphere/staging/node_modules/es-define-property/index.js | 288 bytes | 2026-11-05 22:34:19.2983813890
+/var/www/worldsphere/staging/node_modules/es-define-property/package.json | 2129 bytes | 2026-11-05 22:34:19.3213832250
+/var/www/worldsphere/staging/node_modules/es-define-property/tsconfig.json | 138 bytes | 2026-11-05 22:34:19.3293838640
+/var/www/worldsphere/staging/node_modules/es-errors/.eslintrc | 43 bytes | 2026-11-05 22:34:19.2533777970
+/var/www/worldsphere/staging/node_modules/es-errors/CHANGELOG.md | 1833 bytes | 2026-11-05 22:34:19.3573860990
+/var/www/worldsphere/staging/node_modules/es-errors/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2733793930
+/var/www/worldsphere/staging/node_modules/es-errors/README.md | 2114 bytes | 2026-11-05 22:34:19.3623864980
+/var/www/worldsphere/staging/node_modules/es-errors/eval.d.ts | 68 bytes | 2026-11-05 22:34:19.3663868180
+/var/www/worldsphere/staging/node_modules/es-errors/eval.js | 75 bytes | 2026-11-05 22:34:19.2873805110
+/var/www/worldsphere/staging/node_modules/es-errors/index.d.ts | 56 bytes | 2026-11-05 22:34:19.3683869780
+/var/www/worldsphere/staging/node_modules/es-errors/index.js | 66 bytes | 2026-11-05 22:34:19.2983813890
+/var/www/worldsphere/staging/node_modules/es-errors/package.json | 2174 bytes | 2026-11-05 22:34:19.3443850610
+/var/www/worldsphere/staging/node_modules/es-errors/range.d.ts | 71 bytes | 2026-11-05 22:34:19.3693870570
+/var/www/worldsphere/staging/node_modules/es-errors/range.js | 77 bytes | 2026-11-05 22:34:19.3213832250
+/var/www/worldsphere/staging/node_modules/es-errors/ref.d.ts | 83 bytes | 2026-11-05 22:34:19.3723872970
+/var/www/worldsphere/staging/node_modules/es-errors/ref.js | 79 bytes | 2026-11-05 22:34:19.3273837040
+/var/www/worldsphere/staging/node_modules/es-errors/syntax.d.ts | 74 bytes | 2026-11-05 22:34:19.3753875360
+/var/www/worldsphere/staging/node_modules/es-errors/syntax.js | 79 bytes | 2026-11-05 22:34:19.3333841830
+/var/www/worldsphere/staging/node_modules/es-errors/tsconfig.json | 3170 bytes | 2026-11-05 22:34:19.3513856200
+/var/www/worldsphere/staging/node_modules/es-errors/type.d.ts | 67 bytes | 2026-11-05 22:34:19.3763876160
+/var/www/worldsphere/staging/node_modules/es-errors/type.js | 75 bytes | 2026-11-05 22:34:19.3373845030
+/var/www/worldsphere/staging/node_modules/es-errors/uri.d.ts | 65 bytes | 2026-11-05 22:34:19.3773876960
+/var/www/worldsphere/staging/node_modules/es-errors/uri.js | 73 bytes | 2026-11-05 22:34:19.3403847420
+/var/www/worldsphere/staging/node_modules/es-object-atoms/.eslintrc | 229 bytes | 2026-11-05 22:34:19.2533777970
+/var/www/worldsphere/staging/node_modules/es-object-atoms/CHANGELOG.md | 2622 bytes | 2026-11-05 22:34:19.3443850610
+/var/www/worldsphere/staging/node_modules/es-object-atoms/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2733793930
+/var/www/worldsphere/staging/node_modules/es-object-atoms/README.md | 2603 bytes | 2026-11-05 22:34:19.3513856200
+/var/www/worldsphere/staging/node_modules/es-object-atoms/RequireObjectCoercible.d.ts | 123 bytes | 2026-11-05 22:34:19.3613864190
+/var/www/worldsphere/staging/node_modules/es-object-atoms/RequireObjectCoercible.js | 313 bytes | 2026-11-05 22:34:19.3213832250
+/var/www/worldsphere/staging/node_modules/es-object-atoms/ToObject.d.ts | 352 bytes | 2026-11-05 22:34:19.3663868180
+/var/www/worldsphere/staging/node_modules/es-object-atoms/ToObject.js | 250 bytes | 2026-11-05 22:34:19.3273837040
+/var/www/worldsphere/staging/node_modules/es-object-atoms/index.d.ts | 59 bytes | 2026-11-05 22:34:19.3533857800
+/var/www/worldsphere/staging/node_modules/es-object-atoms/index.js | 67 bytes | 2026-11-05 22:34:19.2873805110
+/var/www/worldsphere/staging/node_modules/es-object-atoms/isObject.d.ts | 104 bytes | 2026-11-05 22:34:19.3573860990
+/var/www/worldsphere/staging/node_modules/es-object-atoms/isObject.js | 161 bytes | 2026-11-05 22:34:19.3143826660
+/var/www/worldsphere/staging/node_modules/es-object-atoms/package.json | 2249 bytes | 2026-11-05 22:34:19.3333841830
+/var/www/worldsphere/staging/node_modules/es-object-atoms/tsconfig.json | 112 bytes | 2026-11-05 22:34:19.3373845030
+/var/www/worldsphere/staging/node_modules/escape-html/LICENSE | 1157 bytes | 2026-11-05 22:34:19.2723793130
+/var/www/worldsphere/staging/node_modules/escape-html/Readme.md | 707 bytes | 2026-11-05 22:34:19.2983813890
+/var/www/worldsphere/staging/node_modules/escape-html/index.js | 1362 bytes | 2026-11-05 22:34:19.2873805110
+/var/www/worldsphere/staging/node_modules/escape-html/package.json | 434 bytes | 2026-11-05 22:34:19.2523777170
+/var/www/worldsphere/staging/node_modules/etag/HISTORY.md | 1732 bytes | 2026-11-05 22:34:19.3053819480
+/var/www/worldsphere/staging/node_modules/etag/LICENSE | 1094 bytes | 2026-11-05 22:34:19.2873805110
+/var/www/worldsphere/staging/node_modules/etag/README.md | 4198 bytes | 2026-11-05 22:34:19.2723793130
+/var/www/worldsphere/staging/node_modules/etag/index.js | 2479 bytes | 2026-11-05 22:34:19.2983813890
+/var/www/worldsphere/staging/node_modules/etag/package.json | 1306 bytes | 2026-11-05 22:34:19.2523777170
+/var/www/worldsphere/staging/node_modules/express/LICENSE | 1249 bytes | 2026-11-05 22:34:19.2523777170
+/var/www/worldsphere/staging/node_modules/express/Readme.md | 10371 bytes | 2026-11-05 22:34:19.3893886540
+/var/www/worldsphere/staging/node_modules/express/index.js | 224 bytes | 2026-11-05 22:34:19.3333841830
+/var/www/worldsphere/staging/node_modules/express/package.json | 2731 bytes | 2026-11-05 22:34:19.3833881750
+/var/www/worldsphere/staging/node_modules/finalhandler/HISTORY.md | 5469 bytes | 2026-11-05 22:34:19.3053819480
+/var/www/worldsphere/staging/node_modules/finalhandler/LICENSE | 1119 bytes | 2026-11-05 22:34:19.2523777170
+/var/www/worldsphere/staging/node_modules/finalhandler/README.md | 4418 bytes | 2026-11-05 22:34:19.3213832250
+/var/www/worldsphere/staging/node_modules/finalhandler/index.js | 5818 bytes | 2026-11-05 22:34:19.2723793130
+/var/www/worldsphere/staging/node_modules/finalhandler/package.json | 1287 bytes | 2026-11-05 22:34:19.2863804310
+/var/www/worldsphere/staging/node_modules/forwarded/HISTORY.md | 400 bytes | 2026-11-05 22:34:19.2973813090
+/var/www/worldsphere/staging/node_modules/forwarded/LICENSE | 1094 bytes | 2026-11-05 22:34:19.2513776370
+/var/www/worldsphere/staging/node_modules/forwarded/README.md | 1654 bytes | 2026-11-05 22:34:19.3053819480
+/var/www/worldsphere/staging/node_modules/forwarded/index.js | 1578 bytes | 2026-11-05 22:34:19.2723793130
+/var/www/worldsphere/staging/node_modules/forwarded/package.json | 1150 bytes | 2026-11-05 22:34:19.2863804310
+/var/www/worldsphere/staging/node_modules/fresh/HISTORY.md | 1844 bytes | 2026-11-05 22:34:19.2973813090
+/var/www/worldsphere/staging/node_modules/fresh/LICENSE | 1174 bytes | 2026-11-05 22:34:19.2513776370
+/var/www/worldsphere/staging/node_modules/fresh/README.md | 3348 bytes | 2026-11-05 22:34:19.3053819480
+/var/www/worldsphere/staging/node_modules/fresh/index.js | 2705 bytes | 2026-11-05 22:34:19.2723793130
+/var/www/worldsphere/staging/node_modules/fresh/package.json | 1218 bytes | 2026-11-05 22:34:19.2863804310
+/var/www/worldsphere/staging/node_modules/function-bind/.eslintrc | 253 bytes | 2026-11-05 22:34:19.2513776370
+/var/www/worldsphere/staging/node_modules/function-bind/.nycrc | 216 bytes | 2026-11-05 22:34:19.2973813090
+/var/www/worldsphere/staging/node_modules/function-bind/CHANGELOG.md | 13812 bytes | 2026-11-05 22:34:19.3533857800
+/var/www/worldsphere/staging/node_modules/function-bind/LICENSE | 1052 bytes | 2026-11-05 22:34:19.3053819480
+/var/www/worldsphere/staging/node_modules/function-bind/README.md | 1755 bytes | 2026-11-05 22:34:19.3613864190
+/var/www/worldsphere/staging/node_modules/function-bind/implementation.js | 2043 bytes | 2026-11-05 22:34:19.3143826660
+/var/www/worldsphere/staging/node_modules/function-bind/index.js | 126 bytes | 2026-11-05 22:34:19.3203831450
+/var/www/worldsphere/staging/node_modules/function-bind/package.json | 2262 bytes | 2026-11-05 22:34:19.3483853810
+/var/www/worldsphere/staging/node_modules/get-intrinsic/.eslintrc | 647 bytes | 2026-11-05 22:34:19.2513776370
+/var/www/worldsphere/staging/node_modules/get-intrinsic/.nycrc | 139 bytes | 2026-11-05 22:34:19.2713792330
+/var/www/worldsphere/staging/node_modules/get-intrinsic/CHANGELOG.md | 15537 bytes | 2026-11-05 22:34:19.3483853810
+/var/www/worldsphere/staging/node_modules/get-intrinsic/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2853803510
+/var/www/worldsphere/staging/node_modules/get-intrinsic/README.md | 2791 bytes | 2026-11-05 22:34:19.3533857800
+/var/www/worldsphere/staging/node_modules/get-intrinsic/index.js | 14439 bytes | 2026-11-05 22:34:19.3203831450
+/var/www/worldsphere/staging/node_modules/get-intrinsic/package.json | 2576 bytes | 2026-11-05 22:34:19.3373845030
+/var/www/worldsphere/staging/node_modules/get-proto/.eslintrc | 104 bytes | 2026-11-05 22:34:19.2513776370
+/var/www/worldsphere/staging/node_modules/get-proto/.nycrc | 139 bytes | 2026-11-05 22:34:19.2713792330
+/var/www/worldsphere/staging/node_modules/get-proto/CHANGELOG.md | 1054 bytes | 2026-11-05 22:34:19.3433849820
+/var/www/worldsphere/staging/node_modules/get-proto/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2853803510
+/var/www/worldsphere/staging/node_modules/get-proto/Object.getPrototypeOf.d.ts | 125 bytes | 2026-11-05 22:34:19.3563860190
+/var/www/worldsphere/staging/node_modules/get-proto/Object.getPrototypeOf.js | 156 bytes | 2026-11-05 22:34:19.3203831450
+/var/www/worldsphere/staging/node_modules/get-proto/README.md | 1794 bytes | 2026-11-05 22:34:19.3513856200
+/var/www/worldsphere/staging/node_modules/get-proto/Reflect.getPrototypeOf.d.ts | 67 bytes | 2026-11-05 22:34:19.3613864190
+/var/www/worldsphere/staging/node_modules/get-proto/Reflect.getPrototypeOf.js | 150 bytes | 2026-11-05 22:34:19.3273837040
+/var/www/worldsphere/staging/node_modules/get-proto/index.d.ts | 126 bytes | 2026-11-05 22:34:19.3533857800
+/var/www/worldsphere/staging/node_modules/get-proto/index.js | 821 bytes | 2026-11-05 22:34:19.2973813090
+/var/www/worldsphere/staging/node_modules/get-proto/package.json | 2176 bytes | 2026-11-05 22:34:19.3323841030
+/var/www/worldsphere/staging/node_modules/get-proto/tsconfig.json | 118 bytes | 2026-11-05 22:34:19.3363844230
+/var/www/worldsphere/staging/node_modules/gopd/.eslintrc | 224 bytes | 2026-11-05 22:34:19.2513776370
+/var/www/worldsphere/staging/node_modules/gopd/CHANGELOG.md | 3077 bytes | 2026-11-05 22:34:19.3323841030
+/var/www/worldsphere/staging/node_modules/gopd/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2713792330
+/var/www/worldsphere/staging/node_modules/gopd/README.md | 1562 bytes | 2026-11-05 22:34:19.3403847420
+/var/www/worldsphere/staging/node_modules/gopd/gOPD.d.ts | 42 bytes | 2026-11-05 22:34:19.3473853010
+/var/www/worldsphere/staging/node_modules/gopd/gOPD.js | 97 bytes | 2026-11-05 22:34:19.2853803510
+/var/www/worldsphere/staging/node_modules/gopd/index.d.ts | 173 bytes | 2026-11-05 22:34:19.3513856200
+/var/www/worldsphere/staging/node_modules/gopd/index.js | 206 bytes | 2026-11-05 22:34:19.2963812290
+/var/www/worldsphere/staging/node_modules/gopd/package.json | 2070 bytes | 2026-11-05 22:34:19.3203831450
+/var/www/worldsphere/staging/node_modules/gopd/tsconfig.json | 116 bytes | 2026-11-05 22:34:19.3263836240
+/var/www/worldsphere/staging/node_modules/has-symbols/.eslintrc | 164 bytes | 2026-11-05 22:34:19.2503775570
+/var/www/worldsphere/staging/node_modules/has-symbols/.nycrc | 139 bytes | 2026-11-05 22:34:19.2703791540
+/var/www/worldsphere/staging/node_modules/has-symbols/CHANGELOG.md | 9431 bytes | 2026-11-05 22:34:19.3773876960
+/var/www/worldsphere/staging/node_modules/has-symbols/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2853803510
+/var/www/worldsphere/staging/node_modules/has-symbols/README.md | 2044 bytes | 2026-11-05 22:34:19.3783877760
+/var/www/worldsphere/staging/node_modules/has-symbols/index.d.ts | 73 bytes | 2026-11-05 22:34:19.3833881750
+/var/www/worldsphere/staging/node_modules/has-symbols/index.js | 447 bytes | 2026-11-05 22:34:19.3433849820
+/var/www/worldsphere/staging/node_modules/has-symbols/package.json | 2974 bytes | 2026-11-05 22:34:19.3713872170
+/var/www/worldsphere/staging/node_modules/has-symbols/shams.d.ts | 69 bytes | 2026-11-05 22:34:19.3853883350
+/var/www/worldsphere/staging/node_modules/has-symbols/shams.js | 1922 bytes | 2026-11-05 22:34:19.3553859390
+/var/www/worldsphere/staging/node_modules/has-symbols/tsconfig.json | 143 bytes | 2026-11-05 22:34:19.3753875360
+/var/www/worldsphere/staging/node_modules/hasown/.nycrc | 216 bytes | 2026-11-05 22:34:19.2503775570
+/var/www/worldsphere/staging/node_modules/hasown/CHANGELOG.md | 4078 bytes | 2026-11-05 22:34:19.3123825070
+/var/www/worldsphere/staging/node_modules/hasown/LICENSE | 1083 bytes | 2026-11-05 22:34:19.2703791540
+/var/www/worldsphere/staging/node_modules/hasown/README.md | 1613 bytes | 2026-11-05 22:34:19.3203831450
+/var/www/worldsphere/staging/node_modules/hasown/eslint.config.mjs | 136 bytes | 2026-11-05 22:34:19.3253835450
+/var/www/worldsphere/staging/node_modules/hasown/index.d.ts | 117 bytes | 2026-11-05 22:34:19.3323841030
+/var/www/worldsphere/staging/node_modules/hasown/index.js | 206 bytes | 2026-11-05 22:34:19.2843802710
+/var/www/worldsphere/staging/node_modules/hasown/package.json | 2258 bytes | 2026-11-05 22:34:19.2963812290
+/var/www/worldsphere/staging/node_modules/hasown/tsconfig.json | 73 bytes | 2026-11-05 22:34:19.3043818680
+/var/www/worldsphere/staging/node_modules/http-errors/HISTORY.md | 4094 bytes | 2026-11-05 22:34:19.2963812290
+/var/www/worldsphere/staging/node_modules/http-errors/LICENSE | 1168 bytes | 2026-11-05 22:34:19.2503775570
+/var/www/worldsphere/staging/node_modules/http-errors/README.md | 5962 bytes | 2026-11-05 22:34:19.3043818680
+/var/www/worldsphere/staging/node_modules/http-errors/index.js | 6430 bytes | 2026-11-05 22:34:19.2703791540
+/var/www/worldsphere/staging/node_modules/http-errors/package.json | 1410 bytes | 2026-11-05 22:34:19.2843802710
+/var/www/worldsphere/staging/node_modules/iconv-lite/LICENSE | 1064 bytes | 2026-11-05 22:34:19.2503775570
+/var/www/worldsphere/staging/node_modules/iconv-lite/README.md | 6587 bytes | 2026-11-05 22:34:19.4133905700
+/var/www/worldsphere/staging/node_modules/iconv-lite/package.json | 2260 bytes | 2026-11-05 22:34:19.4133905700
+/var/www/worldsphere/staging/node_modules/inherits/LICENSE | 749 bytes | 2026-11-05 22:34:19.2963812290
+/var/www/worldsphere/staging/node_modules/inherits/README.md | 1625 bytes | 2026-11-05 22:34:19.3043818680
+/var/www/worldsphere/staging/node_modules/inherits/inherits.js | 250 bytes | 2026-11-05 22:34:19.2843802710
+/var/www/worldsphere/staging/node_modules/inherits/inherits_browser.js | 753 bytes | 2026-11-05 22:34:19.2703791540
+/var/www/worldsphere/staging/node_modules/inherits/package.json | 581 bytes | 2026-11-05 22:34:19.2503775570
+/var/www/worldsphere/staging/node_modules/ipaddr.js/LICENSE | 1087 bytes | 2026-11-05 22:34:19.2843802710
+/var/www/worldsphere/staging/node_modules/ipaddr.js/README.md | 8309 bytes | 2026-11-05 22:34:19.3043818680
+/var/www/worldsphere/staging/node_modules/ipaddr.js/ipaddr.min.js | 9738 bytes | 2026-11-05 22:34:19.2693790740
+/var/www/worldsphere/staging/node_modules/ipaddr.js/package.json | 719 bytes | 2026-11-05 22:34:19.2503775570
+/var/www/worldsphere/staging/node_modules/is-promise/LICENSE | 1058 bytes | 2026-11-05 22:34:19.2493774770
+/var/www/worldsphere/staging/node_modules/is-promise/index.d.ts | 108 bytes | 2026-11-05 22:34:19.3113824270
+/var/www/worldsphere/staging/node_modules/is-promise/index.js | 201 bytes | 2026-11-05 22:34:19.2693790740
+/var/www/worldsphere/staging/node_modules/is-promise/index.mjs | 151 bytes | 2026-11-05 22:34:19.3043818680
+/var/www/worldsphere/staging/node_modules/is-promise/package.json | 576 bytes | 2026-11-05 22:34:19.2843802710
+/var/www/worldsphere/staging/node_modules/is-promise/readme.md | 864 bytes | 2026-11-05 22:34:19.2963812290
+/var/www/worldsphere/staging/node_modules/math-intrinsics/.eslintrc | 229 bytes | 2026-11-05 22:34:19.2493774770
+/var/www/worldsphere/staging/node_modules/math-intrinsics/CHANGELOG.md | 1466 bytes | 2026-11-05 22:34:19.3853883350
+/var/www/worldsphere/staging/node_modules/math-intrinsics/LICENSE | 1073 bytes | 2026-11-05 22:34:19.2693790740
+/var/www/worldsphere/staging/node_modules/math-intrinsics/README.md | 1884 bytes | 2026-11-05 22:34:19.3893886540
+/var/www/worldsphere/staging/node_modules/math-intrinsics/abs.d.ts | 18 bytes | 2026-11-05 22:34:19.3903887340
+/var/www/worldsphere/staging/node_modules/math-intrinsics/abs.js | 73 bytes | 2026-11-05 22:34:19.2843802710
+/var/www/worldsphere/staging/node_modules/math-intrinsics/floor.d.ts | 20 bytes | 2026-11-05 22:34:19.3933889730
+/var/www/worldsphere/staging/node_modules/math-intrinsics/floor.js | 77 bytes | 2026-11-05 22:34:19.2953811500
+/var/www/worldsphere/staging/node_modules/math-intrinsics/isFinite.d.ts | 80 bytes | 2026-11-05 22:34:19.3953891330
+/var/www/worldsphere/staging/node_modules/math-intrinsics/isFinite.js | 262 bytes | 2026-11-05 22:34:19.3193830650
+/var/www/worldsphere/staging/node_modules/math-intrinsics/isInteger.d.ts | 87 bytes | 2026-11-05 22:34:19.3963892130
+/var/www/worldsphere/staging/node_modules/math-intrinsics/isInteger.js | 410 bytes | 2026-11-05 22:34:19.3253835450
+/var/www/worldsphere/staging/node_modules/math-intrinsics/isNaN.d.ts | 22 bytes | 2026-11-05 22:34:19.3973892930
+/var/www/worldsphere/staging/node_modules/math-intrinsics/isNaN.js | 121 bytes | 2026-11-05 22:34:19.3323841030
+/var/www/worldsphere/staging/node_modules/math-intrinsics/isNegativeZero.d.ts | 79 bytes | 2026-11-05 22:34:19.3983893720
+/var/www/worldsphere/staging/node_modules/math-intrinsics/isNegativeZero.js | 143 bytes | 2026-11-05 22:34:19.3363844230
+/var/www/worldsphere/staging/node_modules/math-intrinsics/max.d.ts | 18 bytes | 2026-11-05 22:34:19.3983893720
+/var/www/worldsphere/staging/node_modules/math-intrinsics/max.js | 73 bytes | 2026-11-05 22:34:19.3393846620
+/var/www/worldsphere/staging/node_modules/math-intrinsics/min.d.ts | 18 bytes | 2026-11-05 22:34:19.4013896120
+/var/www/worldsphere/staging/node_modules/math-intrinsics/min.js | 73 bytes | 2026-11-05 22:34:19.3693870570
+/var/www/worldsphere/staging/node_modules/math-intrinsics/mod.d.ts | 76 bytes | 2026-11-05 22:34:19.4013896120
+/var/www/worldsphere/staging/node_modules/math-intrinsics/mod.js | 218 bytes | 2026-11-05 22:34:19.3713872170
+/var/www/worldsphere/staging/node_modules/math-intrinsics/package.json | 2670 bytes | 2026-11-05 22:34:19.3783877760
+/var/www/worldsphere/staging/node_modules/math-intrinsics/pow.d.ts | 18 bytes | 2026-11-05 22:34:19.4023896920
+/var/www/worldsphere/staging/node_modules/math-intrinsics/pow.js | 73 bytes | 2026-11-05 22:34:19.3743874570
+/var/www/worldsphere/staging/node_modules/math-intrinsics/round.d.ts | 20 bytes | 2026-11-05 22:34:19.4023896920
+/var/www/worldsphere/staging/node_modules/math-intrinsics/round.js | 77 bytes | 2026-11-05 22:34:19.3753875360
+/var/www/worldsphere/staging/node_modules/math-intrinsics/sign.d.ts | 57 bytes | 2026-11-05 22:34:19.4033897720
+/var/www/worldsphere/staging/node_modules/math-intrinsics/sign.js | 214 bytes | 2026-11-05 22:34:19.3763876160
+/var/www/worldsphere/staging/node_modules/math-intrinsics/tsconfig.json | 36 bytes | 2026-11-05 22:34:19.3833881750
+/var/www/worldsphere/staging/node_modules/media-typer/HISTORY.md | 1155 bytes | 2026-11-05 22:34:19.2953811500
+/var/www/worldsphere/staging/node_modules/media-typer/LICENSE | 1094 bytes | 2026-11-05 22:34:19.2493774770
+/var/www/worldsphere/staging/node_modules/media-typer/README.md | 3078 bytes | 2026-11-05 22:34:19.3033817880
+/var/www/worldsphere/staging/node_modules/media-typer/index.js | 2936 bytes | 2026-11-05 22:34:19.2693790740
+/var/www/worldsphere/staging/node_modules/media-typer/package.json | 1036 bytes | 2026-11-05 22:34:19.2843802710
+/var/www/worldsphere/staging/node_modules/merge-descriptors/index.d.ts | 635 bytes | 2026-11-05 22:34:19.3033817880
+/var/www/worldsphere/staging/node_modules/merge-descriptors/index.js | 616 bytes | 2026-11-05 22:34:19.2693790740
+/var/www/worldsphere/staging/node_modules/merge-descriptors/license | 1231 bytes | 2026-11-05 22:34:19.2493774770
+/var/www/worldsphere/staging/node_modules/merge-descriptors/package.json | 961 bytes | 2026-11-05 22:34:19.2843802710
+/var/www/worldsphere/staging/node_modules/merge-descriptors/readme.md | 930 bytes | 2026-11-05 22:34:19.2953811500
+/var/www/worldsphere/staging/node_modules/mime-db/HISTORY.md | 13886 bytes | 2026-11-05 22:34:19.3643866580
+/var/www/worldsphere/staging/node_modules/mime-db/LICENSE | 1172 bytes | 2026-11-05 22:34:19.2493774770
+/var/www/worldsphere/staging/node_modules/mime-db/README.md | 4949 bytes | 2026-11-05 22:34:19.3703871370
+/var/www/worldsphere/staging/node_modules/mime-db/db.json | 203840 bytes | 2026-11-05 22:34:19.3523857000
+/var/www/worldsphere/staging/node_modules/mime-db/index.js | 189 bytes | 2026-11-05 22:34:19.2693790740
+/var/www/worldsphere/staging/node_modules/mime-db/package.json | 1530 bytes | 2026-11-05 22:34:19.3553859390
+/var/www/worldsphere/staging/node_modules/mime-types/HISTORY.md | 9923 bytes | 2026-11-05 22:34:19.3113824270
+/var/www/worldsphere/staging/node_modules/mime-types/LICENSE | 1167 bytes | 2026-11-05 22:34:19.2493774770
+/var/www/worldsphere/staging/node_modules/mime-types/README.md | 4472 bytes | 2026-11-05 22:34:19.3253835450
+/var/www/worldsphere/staging/node_modules/mime-types/index.js | 4546 bytes | 2026-11-05 22:34:19.2683789940
+/var/www/worldsphere/staging/node_modules/mime-types/mimeScore.js | 1497 bytes | 2026-11-05 22:34:19.2843802710
+/var/www/worldsphere/staging/node_modules/mime-types/package.json | 1266 bytes | 2026-11-05 22:34:19.2953811500
+/var/www/worldsphere/staging/node_modules/ms/index.js | 3024 bytes | 2026-11-05 22:34:19.2493774770
+/var/www/worldsphere/staging/node_modules/ms/license.md | 1079 bytes | 2026-11-05 22:34:19.2833801910
+/var/www/worldsphere/staging/node_modules/ms/package.json | 732 bytes | 2026-11-05 22:34:19.2683789940
+/var/www/worldsphere/staging/node_modules/ms/readme.md | 1886 bytes | 2026-11-05 22:34:19.2953811500
+/var/www/worldsphere/staging/node_modules/negotiator/LICENSE | 1177 bytes | 2026-11-05 22:34:19.2483773970
+/var/www/worldsphere/staging/node_modules/negotiator/README.md | 5330 bytes | 2026-11-05 22:34:19.3693870570
+/var/www/worldsphere/staging/node_modules/negotiator/index.js | 2516 bytes | 2026-11-05 22:34:19.3363844230
+/var/www/worldsphere/staging/node_modules/negotiator/package.json | 1232 bytes | 2026-11-05 22:34:19.3663868180
+/var/www/worldsphere/staging/node_modules/object-inspect/.eslintrc | 1298 bytes | 2026-11-05 22:34:19.2483773970
+/var/www/worldsphere/staging/node_modules/object-inspect/.nycrc | 236 bytes | 2026-11-05 22:34:19.2673789140
+/var/www/worldsphere/staging/node_modules/object-inspect/CHANGELOG.md | 36562 bytes | 2026-11-05 22:34:19.4113904100
+/var/www/worldsphere/staging/node_modules/object-inspect/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2833801910
+/var/www/worldsphere/staging/node_modules/object-inspect/index.js | 19059 bytes | 2026-11-05 22:34:19.4033897720
+/var/www/worldsphere/staging/node_modules/object-inspect/package-support.json | 365 bytes | 2026-11-05 22:34:19.4103903310
+/var/www/worldsphere/staging/node_modules/object-inspect/package.json | 2841 bytes | 2026-11-05 22:34:19.4103903310
+/var/www/worldsphere/staging/node_modules/object-inspect/readme.markdown | 2988 bytes | 2026-11-05 22:34:19.4103903310
+/var/www/worldsphere/staging/node_modules/object-inspect/test-core-js.js | 534 bytes | 2026-11-05 22:34:19.4083901710
+/var/www/worldsphere/staging/node_modules/object-inspect/util.inspect.js | 42 bytes | 2026-11-05 22:34:19.4093902510
+/var/www/worldsphere/staging/node_modules/on-finished/LICENSE | 1167 bytes | 2026-11-05 22:34:19.2483773970
+/var/www/worldsphere/staging/node_modules/on-finished/README.md | 5160 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/on-finished/index.js | 4692 bytes | 2026-11-05 22:34:19.2673789140
+/var/www/worldsphere/staging/node_modules/on-finished/package.json | 1153 bytes | 2026-11-05 22:34:19.2833801910
+/var/www/worldsphere/staging/node_modules/once/LICENSE | 765 bytes | 2026-11-05 22:34:19.2823801120
+/var/www/worldsphere/staging/node_modules/once/README.md | 1772 bytes | 2026-11-05 22:34:19.2673789140
+/var/www/worldsphere/staging/node_modules/once/once.js | 935 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/once/package.json | 574 bytes | 2026-11-05 22:34:19.2483773970
+/var/www/worldsphere/staging/node_modules/parseurl/HISTORY.md | 1043 bytes | 2026-11-05 22:34:19.2673789140
+/var/www/worldsphere/staging/node_modules/parseurl/LICENSE | 1173 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/parseurl/README.md | 4094 bytes | 2026-11-05 22:34:19.3033817880
+/var/www/worldsphere/staging/node_modules/parseurl/index.js | 2809 bytes | 2026-11-05 22:34:19.2823801120
+/var/www/worldsphere/staging/node_modules/parseurl/package.json | 1180 bytes | 2026-11-05 22:34:19.2483773970
+/var/www/worldsphere/staging/node_modules/path-to-regexp/LICENSE | 1103 bytes | 2026-11-05 22:34:19.2483773970
+/var/www/worldsphere/staging/node_modules/path-to-regexp/Readme.md | 7832 bytes | 2026-11-05 22:34:19.3423849020
+/var/www/worldsphere/staging/node_modules/path-to-regexp/package.json | 1399 bytes | 2026-11-05 22:34:19.3103823470
+/var/www/worldsphere/staging/node_modules/proxy-addr/HISTORY.md | 2480 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/proxy-addr/LICENSE | 1094 bytes | 2026-11-05 22:34:19.2473773170
+/var/www/worldsphere/staging/node_modules/proxy-addr/README.md | 4131 bytes | 2026-11-05 22:34:19.3103823470
+/var/www/worldsphere/staging/node_modules/proxy-addr/index.js | 7340 bytes | 2026-11-05 22:34:19.2673789140
+/var/www/worldsphere/staging/node_modules/proxy-addr/package.json | 1281 bytes | 2026-11-05 22:34:19.2823801120
+/var/www/worldsphere/staging/node_modules/qs/.editorconfig | 605 bytes | 2026-11-05 22:34:19.2473773170
+/var/www/worldsphere/staging/node_modules/qs/.nycrc | 216 bytes | 2026-11-05 22:34:19.2663788340
+/var/www/worldsphere/staging/node_modules/qs/CHANGELOG.md | 49086 bytes | 2026-11-05 22:34:19.4053899310
+/var/www/worldsphere/staging/node_modules/qs/LICENSE.md | 1600 bytes | 2026-11-05 22:34:19.4053899310
+/var/www/worldsphere/staging/node_modules/qs/README.md | 32861 bytes | 2026-11-05 22:34:19.4063900110
+/var/www/worldsphere/staging/node_modules/qs/eslint.config.mjs | 1260 bytes | 2026-11-05 22:34:19.4083901710
+/var/www/worldsphere/staging/node_modules/qs/package.json | 3166 bytes | 2026-11-05 22:34:19.4043898520
+/var/www/worldsphere/staging/node_modules/range-parser/HISTORY.md | 917 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/range-parser/LICENSE | 1178 bytes | 2026-11-05 22:34:19.2473773170
+/var/www/worldsphere/staging/node_modules/range-parser/README.md | 2370 bytes | 2026-11-05 22:34:19.3023817080
+/var/www/worldsphere/staging/node_modules/range-parser/index.js | 3205 bytes | 2026-11-05 22:34:19.2663788340
+/var/www/worldsphere/staging/node_modules/range-parser/package.json | 1297 bytes | 2026-11-05 22:34:19.2813800320
+/var/www/worldsphere/staging/node_modules/raw-body/LICENSE | 1181 bytes | 2026-11-05 22:34:19.2473773170
+/var/www/worldsphere/staging/node_modules/raw-body/README.md | 6553 bytes | 2026-11-05 22:34:19.3023817080
+/var/www/worldsphere/staging/node_modules/raw-body/index.d.ts | 2315 bytes | 2026-11-05 22:34:19.3183829860
+/var/www/worldsphere/staging/node_modules/raw-body/index.js | 7171 bytes | 2026-11-05 22:34:19.2663788340
+/var/www/worldsphere/staging/node_modules/raw-body/package.json | 1275 bytes | 2026-11-05 22:34:19.2813800320
+/var/www/worldsphere/staging/node_modules/router/HISTORY.md | 6571 bytes | 2026-11-05 22:34:19.3423849020
+/var/www/worldsphere/staging/node_modules/router/LICENSE | 1128 bytes | 2026-11-05 22:34:19.2463772380
+/var/www/worldsphere/staging/node_modules/router/README.md | 12656 bytes | 2026-11-05 22:34:19.3523857000
+/var/www/worldsphere/staging/node_modules/router/index.js | 15866 bytes | 2026-11-05 22:34:19.2813800320
+/var/www/worldsphere/staging/node_modules/router/package.json | 1142 bytes | 2026-11-05 22:34:19.3353843430
+/var/www/worldsphere/staging/node_modules/safer-buffer/LICENSE | 1094 bytes | 2026-11-05 22:34:19.2813800320
+/var/www/worldsphere/staging/node_modules/safer-buffer/Porting-Buffer.md | 12794 bytes | 2026-11-05 22:34:19.3013816290
+/var/www/worldsphere/staging/node_modules/safer-buffer/Readme.md | 8261 bytes | 2026-11-05 22:34:19.3183829860
+/var/www/worldsphere/staging/node_modules/safer-buffer/dangerous.js | 1483 bytes | 2026-11-05 22:34:19.2663788340
+/var/www/worldsphere/staging/node_modules/safer-buffer/package.json | 822 bytes | 2026-11-05 22:34:19.2463772380
+/var/www/worldsphere/staging/node_modules/safer-buffer/safer.js | 2110 bytes | 2026-11-05 22:34:19.3253835450
+/var/www/worldsphere/staging/node_modules/safer-buffer/tests.js | 15735 bytes | 2026-11-05 22:34:19.3353843430
+/var/www/worldsphere/staging/node_modules/send/LICENSE | 1128 bytes | 2026-11-05 22:34:19.2463772380
+/var/www/worldsphere/staging/node_modules/send/README.md | 9062 bytes | 2026-11-05 22:34:19.3183829860
+/var/www/worldsphere/staging/node_modules/send/index.js | 20341 bytes | 2026-11-05 22:34:19.2813800320
+/var/www/worldsphere/staging/node_modules/send/package.json | 1669 bytes | 2026-11-05 22:34:19.3013816290
+/var/www/worldsphere/staging/node_modules/serve-static/LICENSE | 1189 bytes | 2026-11-05 22:34:19.2463772380
+/var/www/worldsphere/staging/node_modules/serve-static/README.md | 7464 bytes | 2026-11-05 22:34:19.3013816290
+/var/www/worldsphere/staging/node_modules/serve-static/index.js | 4489 bytes | 2026-11-05 22:34:19.2653787550
+/var/www/worldsphere/staging/node_modules/serve-static/package.json | 1193 bytes | 2026-11-05 22:34:19.2813800320
+/var/www/worldsphere/staging/node_modules/setprototypeof/LICENSE | 727 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/setprototypeof/README.md | 844 bytes | 2026-11-05 22:34:19.3013816290
+/var/www/worldsphere/staging/node_modules/setprototypeof/index.d.ts | 93 bytes | 2026-11-05 22:34:19.2653787550
+/var/www/worldsphere/staging/node_modules/setprototypeof/index.js | 407 bytes | 2026-11-05 22:34:19.2803799520
+/var/www/worldsphere/staging/node_modules/setprototypeof/package.json | 1264 bytes | 2026-11-05 22:34:19.2463772380
+/var/www/worldsphere/staging/node_modules/side-channel-list/.editorconfig | 145 bytes | 2026-11-05 22:34:19.2453771580
+/var/www/worldsphere/staging/node_modules/side-channel-list/.eslintrc | 185 bytes | 2026-11-05 22:34:19.2653787550
+/var/www/worldsphere/staging/node_modules/side-channel-list/.nycrc | 216 bytes | 2026-11-05 22:34:19.2803799520
+/var/www/worldsphere/staging/node_modules/side-channel-list/CHANGELOG.md | 1634 bytes | 2026-11-05 22:34:19.3413848220
+/var/www/worldsphere/staging/node_modules/side-channel-list/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/side-channel-list/README.md | 2285 bytes | 2026-11-05 22:34:19.3453851410
+/var/www/worldsphere/staging/node_modules/side-channel-list/index.d.ts | 335 bytes | 2026-11-05 22:34:19.3493854610
+/var/www/worldsphere/staging/node_modules/side-channel-list/index.js | 3289 bytes | 2026-11-05 22:34:19.3013816290
+/var/www/worldsphere/staging/node_modules/side-channel-list/list.d.ts | 721 bytes | 2026-11-05 22:34:19.3523857000
+/var/www/worldsphere/staging/node_modules/side-channel-list/package.json | 2258 bytes | 2026-11-05 22:34:19.3303839440
+/var/www/worldsphere/staging/node_modules/side-channel-list/tsconfig.json | 116 bytes | 2026-11-05 22:34:19.3393846620
+/var/www/worldsphere/staging/node_modules/side-channel-map/.editorconfig | 145 bytes | 2026-11-05 22:34:19.2453771580
+/var/www/worldsphere/staging/node_modules/side-channel-map/.eslintrc | 185 bytes | 2026-11-05 22:34:19.2643786750
+/var/www/worldsphere/staging/node_modules/side-channel-map/.nycrc | 216 bytes | 2026-11-05 22:34:19.2803799520
+/var/www/worldsphere/staging/node_modules/side-channel-map/CHANGELOG.md | 1191 bytes | 2026-11-05 22:34:19.3393846620
+/var/www/worldsphere/staging/node_modules/side-channel-map/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/side-channel-map/README.md | 2278 bytes | 2026-11-05 22:34:19.3453851410
+/var/www/worldsphere/staging/node_modules/side-channel-map/index.d.ts | 367 bytes | 2026-11-05 22:34:19.3493854610
+/var/www/worldsphere/staging/node_modules/side-channel-map/index.js | 1981 bytes | 2026-11-05 22:34:19.3013816290
+/var/www/worldsphere/staging/node_modules/side-channel-map/package.json | 2336 bytes | 2026-11-05 22:34:19.3243834650
+/var/www/worldsphere/staging/node_modules/side-channel-map/tsconfig.json | 116 bytes | 2026-11-05 22:34:19.3303839440
+/var/www/worldsphere/staging/node_modules/side-channel-weakmap/.editorconfig | 145 bytes | 2026-11-05 22:34:19.2453771580
+/var/www/worldsphere/staging/node_modules/side-channel-weakmap/.eslintrc | 203 bytes | 2026-11-05 22:34:19.2643786750
+/var/www/worldsphere/staging/node_modules/side-channel-weakmap/.nycrc | 216 bytes | 2026-11-05 22:34:19.2793798720
+/var/www/worldsphere/staging/node_modules/side-channel-weakmap/CHANGELOG.md | 1477 bytes | 2026-11-05 22:34:19.3353843430
+/var/www/worldsphere/staging/node_modules/side-channel-weakmap/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/side-channel-weakmap/README.md | 2342 bytes | 2026-11-05 22:34:19.3383845820
+/var/www/worldsphere/staging/node_modules/side-channel-weakmap/index.d.ts | 382 bytes | 2026-11-05 22:34:19.3413848220
+/var/www/worldsphere/staging/node_modules/side-channel-weakmap/index.js | 2708 bytes | 2026-11-05 22:34:19.3013816290
+/var/www/worldsphere/staging/node_modules/side-channel-weakmap/package.json | 2447 bytes | 2026-11-05 22:34:19.3233833850
+/var/www/worldsphere/staging/node_modules/side-channel-weakmap/tsconfig.json | 116 bytes | 2026-11-05 22:34:19.3293838640
+/var/www/worldsphere/staging/node_modules/side-channel/.editorconfig | 145 bytes | 2026-11-05 22:34:19.2463772380
+/var/www/worldsphere/staging/node_modules/side-channel/.eslintrc | 203 bytes | 2026-11-05 22:34:19.2653787550
+/var/www/worldsphere/staging/node_modules/side-channel/.nycrc | 216 bytes | 2026-11-05 22:34:19.2803799520
+/var/www/worldsphere/staging/node_modules/side-channel/CHANGELOG.md | 11419 bytes | 2026-11-05 22:34:19.3393846620
+/var/www/worldsphere/staging/node_modules/side-channel/LICENSE | 1071 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/side-channel/README.md | 2110 bytes | 2026-11-05 22:34:19.3463852210
+/var/www/worldsphere/staging/node_modules/side-channel/index.d.ts | 486 bytes | 2026-11-05 22:34:19.3493854610
+/var/www/worldsphere/staging/node_modules/side-channel/index.js | 1222 bytes | 2026-11-05 22:34:19.3013816290
+/var/www/worldsphere/staging/node_modules/side-channel/package.json | 2362 bytes | 2026-11-05 22:34:19.3243834650
+/var/www/worldsphere/staging/node_modules/side-channel/tsconfig.json | 116 bytes | 2026-11-05 22:34:19.3303839440
+/var/www/worldsphere/staging/node_modules/statuses/HISTORY.md | 1628 bytes | 2026-11-05 22:34:19.3013816290
+/var/www/worldsphere/staging/node_modules/statuses/LICENSE | 1172 bytes | 2026-11-05 22:34:19.2453771580
+/var/www/worldsphere/staging/node_modules/statuses/README.md | 3866 bytes | 2026-11-05 22:34:19.3173829060
+/var/www/worldsphere/staging/node_modules/statuses/codes.json | 1789 bytes | 2026-11-05 22:34:19.2793798720
+/var/www/worldsphere/staging/node_modules/statuses/index.js | 2610 bytes | 2026-11-05 22:34:19.2643786750
+/var/www/worldsphere/staging/node_modules/statuses/package.json | 1440 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/toidentifier/HISTORY.md | 128 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/toidentifier/LICENSE | 1108 bytes | 2026-11-05 22:34:19.2453771580
+/var/www/worldsphere/staging/node_modules/toidentifier/README.md | 1803 bytes | 2026-11-05 22:34:19.3003815490
+/var/www/worldsphere/staging/node_modules/toidentifier/index.js | 504 bytes | 2026-11-05 22:34:19.2643786750
+/var/www/worldsphere/staging/node_modules/toidentifier/package.json | 1142 bytes | 2026-11-05 22:34:19.2783797920
+/var/www/worldsphere/staging/node_modules/type-is/HISTORY.md | 6864 bytes | 2026-11-05 22:34:19.3003815490
+/var/www/worldsphere/staging/node_modules/type-is/LICENSE | 1172 bytes | 2026-11-05 22:34:19.2443770780
+/var/www/worldsphere/staging/node_modules/type-is/README.md | 6504 bytes | 2026-11-05 22:34:19.3173829060
+/var/www/worldsphere/staging/node_modules/type-is/index.js | 5396 bytes | 2026-11-05 22:34:19.2643786750
+/var/www/worldsphere/staging/node_modules/type-is/package.json | 1333 bytes | 2026-11-05 22:34:19.2783797920
+/var/www/worldsphere/staging/node_modules/unpipe/HISTORY.md | 59 bytes | 2026-11-05 22:34:19.3003815490
+/var/www/worldsphere/staging/node_modules/unpipe/LICENSE | 1114 bytes | 2026-11-05 22:34:19.2783797920
+/var/www/worldsphere/staging/node_modules/unpipe/README.md | 1250 bytes | 2026-11-05 22:34:19.2633785950
+/var/www/worldsphere/staging/node_modules/unpipe/index.js | 1118 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/unpipe/package.json | 770 bytes | 2026-11-05 22:34:19.2443770780
+/var/www/worldsphere/staging/node_modules/vary/HISTORY.md | 792 bytes | 2026-11-05 22:34:19.3003815490
+/var/www/worldsphere/staging/node_modules/vary/LICENSE | 1094 bytes | 2026-11-05 22:34:19.2783797920
+/var/www/worldsphere/staging/node_modules/vary/README.md | 2716 bytes | 2026-11-05 22:34:19.2633785950
+/var/www/worldsphere/staging/node_modules/vary/index.js | 2930 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/node_modules/vary/package.json | 1215 bytes | 2026-11-05 22:34:19.2443770780
+/var/www/worldsphere/staging/node_modules/wrappy/LICENSE | 765 bytes | 2026-11-05 22:34:19.2773797120
+/var/www/worldsphere/staging/node_modules/wrappy/README.md | 685 bytes | 2026-11-05 22:34:19.2623785150
+/var/www/worldsphere/staging/node_modules/wrappy/package.json | 606 bytes | 2026-11-05 22:34:19.2443770780
+/var/www/worldsphere/staging/node_modules/wrappy/wrappy.js | 905 bytes | 2026-11-05 22:34:19.2943810700
+/var/www/worldsphere/staging/package-lock.json | 29942 bytes | 2026-11-05 22:30:54.5820202240
+/var/www/worldsphere/staging/package.json | 620 bytes | 2026-11-05 22:30:54.5820202240
+/var/www/worldsphere/staging/run_game.bat | 250 bytes | 2026-11-05 22:30:54.5820202240
+/var/www/worldsphere/staging/server.js | 950 bytes | 2026-11-05 22:30:54.5820202240
+/var/www/worldsphere/staging/server__notes.js | 4977 bytes | 2026-11-05 22:30:54.5820202240
+/var/www/worldsphere/staging/temp/__19970__.png | 134655 bytes | 2026-11-10 21:06:15.4023584380
+/var/www/worldsphere/staging/temp/__19975__.png | 389411 bytes | 2026-11-10 21:50:38.2478268640
+/var/www/worldsphere/staging/temp/__19978__.png | 160715 bytes | 2026-11-11 03:22:41.0402070040
+/var/www/worldsphere/staging/temp/shot1.png | 868716 bytes | 2026-11-09 06:14:25.3387933620
+/var/www/worldsphere/staging/temp/shot2.png | 882848 bytes | 2026-11-09 06:32:04.7963510020
+/var/www/worldsphere/staging/temp/shot3.png | 1132316 bytes | 2026-11-09 06:51:35.2490652020
+/var/www/worldsphere/staging/temp/shot4.png | 870181 bytes | 2026-11-09 07:29:02.1475490140
+/var/www/worldsphere/staging/temp/shot5.png | 923223 bytes | 2026-11-09 08:50:18.1904541780
+/var/www/worldsphere/staging/temp/shot6.png | 1359586 bytes | 2026-11-09 09:10:04.5608870830
+/var/www/worldsphere/staging/temp/shot7.png | 1051756 bytes | 2026-11-09 09:13:06.6864640830
+/var/www/worldsphere/staging/temp/shot8.png | 966197 bytes | 2026-11-09 09:16:00.4103465040
+
+=== LIVE REPO RESIDUE ===
+/var/www/worldsphere/pro-bowling-3d/review__init__html.dat | 0 bytes | 2026-11-02 05:53:05.4700038040
+/var/www/worldsphere/pro-bowling-3d/temp/shot1.png | 868716 bytes | 2026-11-09 06:05:13.3851059030
+
+=== HISTORY DIRECTORY ===
+/var/www/worldsphere/history/19864.dat | 1103 bytes | 2026-11-04 18:13:01.6320336430
+
+=== PM2 RECOVERY FILES ===
+total 48
+-rw-rw-r-- 1 mainsphere mainsphere 27517 Nov  5 22:44 dump.pm2
+-rw-rw-r-- 1 mainsphere mainsphere 18301 Nov  5 22:44 dump.pm2.bak
+
+=== NGINX CONFIG BACKUPS ===
+-rw-r--r-- 1 root root 3957 Nov 11 19:09 /etc/nginx/sites-available/default
+-rw-r--r-- 1 root root 3957 Nov 10 21:17 /etc/nginx/sites-available/default.pre-live-route-20261111-190927
+-rw-r--r-- 1 root root 4002 Nov  5 22:29 /etc/nginx/sites-available/default.pre-tailscale-fix
+-rw-r--r-- 1 root root 4002 Nov  5 22:29 /etc/nginx/sites-available/default.pre-release1-20261105
+-rw-r--r-- 1 root root 3904 Nov  2 05:40 /etc/nginx/sites-available/default.pre-mepe-proxy
+-rw-r--r-- 1 root root 2412 Nov 30  2023 /etc/nginx/sites-available/default.dpkg-dist
+
+INVENTORY SAVED: /home/mainsphere/worldsphere-residue-inventory-20261111-191546.txt
+work|$ 
+work|$ 
+work|$ 
+work|$ 
+work|$ 
+###| 
+###| 
+###| Important distinctions emerged:
+###| - Staging monitor: two untracked server versions; both matter.
+###| - Screenshots: eight numbered shots plus three timestamped captures. These are actual working residue, not disposable build output.
+###| - Live checkout: a screenshot and a zero-byte review placeholder.
+###| - Git stash: still intact, including the archived minimal server.
+###| - History: 19864.dat is still unclassified. We should read it before assigning it to a history category.
+###| - PM2 and Nginx: recovery snapshots and configuration backups are present.
+###| 
+###| 
+
+work|$ 
+work|$ 
+work|$ 
+work|$ 

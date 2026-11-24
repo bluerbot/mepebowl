@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Lionel Garnier, Université de Bourgogne">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <script>
+        if (new URLSearchParams(location.search).get('encounter') === 'lane22') {
+            document.documentElement.classList.add('lane22-entry');
+        }
+    </script>
+
+
+    <title>Mepe Bowl</title>
+
+    <!-- Dependencies -->
+    <script type="text/javascript" charset="UTF-8" src="../../libs/three/three.js"></script>
+
+<script src="../../libs/three/loaders/GLTFLoader.js"></script>
+
+    <script type="text/javascript" charset="UTF-8" src="../../libs/other/physijs/physi.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="../../libs/other/ThreeBSP.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="../../libs/three/controls/TrackballControls.js"></script>
+    <script type="text/javascript" src="../../libs/util/dat.gui.js"></script>
+    <script type="text/javascript" src="../../libs/util/Stats.js"></script>
+    <script type="text/javascript" src="../../libs/util/util.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0a0e1a;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+/*
+        #webgl {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+*/
+
+#webgl {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100vw, 480px);
+    height: 100vh;
+    height: 100dvh;
+    z-index: 1;
+    overflow: hidden;
+    background: #0a0e1a;
+}
+
+        /* Glassmorphism UI */
+
+/*
+   .ui-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+            /* Let clicks pass through */
+        }
+*/
+
+.ui-layer {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100vw, 480px);
+    height: 100vh;
+    height: 100dvh;
+    z-index: 10;
+    pointer-events: none;
+}
+
+	.interactive {
+            pointer-events: auto;
+        }
+
+        /* Start Menu Overlay */
+        #start-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 14, 26, 0.95);
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+        }
+
+        .lane22-entry #start-menu {
+            display: none;
+        }
+
+        .menu-container {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: clamp(24px, 8vw, 40px);
+            width: min(400px, calc(100vw - 32px));
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .menu-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-top: 0;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+
+        .menu-tagline {
+            margin: 0 0 30px;
+            color: #00cfe8;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .menu-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .menu-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #aaa;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .option-btn {
+            flex: 1;
+            padding: 12px;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: white;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .option-btn.selected {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        .range-slider {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .range-val {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            background: #fff;
+            border: 1px solid #fff;
+            border-radius: 4px;
+            color: #000;
+            font-family: inherit;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .start-btn:hover {
+            background: #ddd;
+        }
+
+        #menu-button {
+            position: fixed;
+            top: 80px;
+            right: 12px;
+            bottom: auto;
+            z-index: 400;
+            display: none;
+            padding: 8px 14px;
+            background: rgba(20, 20, 28, 0.85);
+            border: 1px solid #666;
+            border-radius: 4px;
+            color: white;
+            font: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        #menu-button:hover {
+            background: #444;
+        }
+
+        #game-results {
+            position: fixed;
+            inset: 0;
+            z-index: 450;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(5, 8, 18, 0.78);
+            pointer-events: auto;
+        }
+
+        .results-container {
+            width: 360px;
+            max-width: calc(100vw - 40px);
+            padding: 35px;
+            box-sizing: border-box;
+            text-align: center;
+            background: #111;
+            border: 1px solid #555;
+            border-radius: 6px;
+        }
+
+        .results-title {
+            margin: 0 0 20px;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .results-score {
+            margin: 10px 0 25px;
+            font-size: 64px;
+            font-weight: 800;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .results-actions button {
+            flex: 1;
+            padding: 13px 8px;
+            background: #222;
+            border: 1px solid #666;
+            border-radius: 4px;
+            color: white;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .results-actions button:first-child {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+
+        /* Overhead Scoreboard */
+        #overhead-scoreboard {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            width:min(100vw, 480px);
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            border-bottom: 1px solid #333;
+            display: none; /* Hidden until start */
+            flex-direction: column;
+            padding: 5px 20px;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            z-index: 200;
+            transform: translateX(-50%) scale(0.85);
+            transform-origin: top center;
+        }
+
+        .team-row {
+            display: flex;
+            align-items: center;
+            margin: 2px 0;
+        }
+
+        .team-name {
+            width: 80px;
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .cyan-team .team-name {
+            color: #00e5ff;
+        }
+
+        .red-team .team-name {
+            color: #ff0022;
+        }
+
+        .frames {
+            display: flex;
+            flex: 1;
+            gap: 5px;
+        }
+
+        .frame {
+            flex: 1;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .frame-header {
+            text-align: center;
+            font-size: 10px;
+            color: #aaa;
+            background: #222;
+            padding: 2px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .frame-throws {
+            display: flex;
+            height: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .throw-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            border-right: 1px solid #333;
+        }
+
+        .throw-box:last-child {
+            border-right: none;
+        }
+
+        .frame-score {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 800;
+            padding: 5px 0;
+        }
+
+        .total-score {
+            width: 80px;
+            text-align: right;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        /* Announcement Banner */
+        #announce-banner {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 300;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+        }
+
+        #announce-banner.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        #announce-text {
+            font-size: 80px;
+            font-weight: 800;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #fff;
+        }
+
+        .strike-text {
+            color: #ffd700 !important;
+        }
+
+        .spare-text {
+            color: #00e5ff !important;
+        }
+
+        .open-text {
+            color: #ffffff !important;
+        }
+        .credits-link {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 6px 12px;
+            border: 0;
+            background: transparent;
+            color: #888;
+            font-size: 11px;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .credits-link:hover {
+            color: #00cfe8;
+        }
+
+        #credits-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 700;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background: rgba(5, 8, 16, 0.88);
+        }
+
+        .credits-panel {
+            width: min(420px, 100%);
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 26px;
+            box-sizing: border-box;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background: #111;
+            color: #bbb;
+            text-align: left;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        .credits-panel h2 {
+            margin: 0 0 18px;
+            color: #fff;
+            font-size: 20px;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .credits-panel h3 {
+            margin: 18px 0 5px;
+            color: #00cfe8;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .credits-panel p {
+            margin: 4px 0;
+        }
+
+        .credits-panel a {
+            color: #00cfe8;
+            text-decoration: none;
+        }
+
+        .credits-close {
+            display: block;
+            margin: 22px auto 0;
+            padding: 9px 22px;
+            border: 1px solid #444;
+            border-radius: 3px;
+            background: #191919;
+            color: #fff;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="start-menu">
+        <div class="menu-container">
+            <h1 class="menu-title">MEPE BOWL</h1>
+            <p class="menu-tagline">THE $NIGHT SHIFT STARTS HERE.</p>
+
+            <div class="menu-group">
+                <span class="menu-label">Players</span>
+                <div class="btn-group">
+                    <button class="option-btn selected" id="btn-1p" disabled>IF YOU KNOW, YOU'RE AT THE RIGHT PLACE.</button>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <span class="menu-label">Rounds (Frames)</span>
+                <input type="range" id="rounds-slider" class="range-slider" min="1" max="10" value="10" oninput="updateRounds(this.value)">
+                <div class="range-val" id="rounds-val">10</div>
+            </div>
+
+            <button class="start-btn" onclick="startClicked()">PLAY NOW</button>
+            <button class="credits-link" onclick="showCredits()">CREDITS</button>
+        </div>
+    </div>
+
+    <div id="credits-overlay" onclick="if (event.target === this) hideCredits()">
+        <div class="credits-panel" role="dialog" aria-modal="true" aria-labelledby="credits-title">
+            <h2 id="credits-title">CREDITS</h2>
+
+            <h3>Original Bowling Game</h3>
+            <p>AHMIM Mohamed</p>
+            <p>RAMDANI Ferhat</p>
+            <p><a href="https://github.com/bluerbot/pro-bowling-3d" target="_blank" rel="noopener noreferrer">Pro Bowling 3D source project</a></p>
+
+            <h3>Character</h3>
+            <p>Mepe character — Mepe token on Solada.fun</p>
+
+            <h3>Technology</h3>
+            <p>Three.js · Physijs · Ammo.js · ThreeBSP</p>
+            <p>Stats.js — mrdoob</p>
+            <p>dat.GUI — Data Arts Team, Google Creative Lab</p>
+
+            <button class="credits-close" onclick="hideCredits()">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- UI -->
+    <div class="ui-layer interactive">
+
+<button id="menu-button" onclick="handleMenuClick()">MENU</button>
+
+        <div id="game-results">
+            <div class="results-container">
+                <h2 class="results-title">GAME COMPLETE</h2>
+                <div>FINAL SCORE</div>
+                <div class="results-score" id="final-score">0</div>
+                <div class="results-actions">
+                    <button onclick="window.location.href = window.location.pathname + (lane22Entry ? '?encounter=lane22&replay=1' : '?replay=1')">PLAY AGAIN</button>
+                    <button onclick="handleResultsMenuClick()">MENU</button>
+                </div>
+            </div>
+        </div>
+        <div id="overhead-scoreboard">
+            <div class="team-row cyan-team" id="row-cyan">
+
+<div class="team-name" id="player-name">...</div>
+
+                <div class="frames" id="cyan-frames"></div>
+                <div class="total-score" id="cyan-total">0</div>
+            </div>
+            <div class="team-row red-team" id="row-red">
+                <div class="team-name">RED</div>
+                <div class="frames" id="red-frames"></div>
+                <div class="total-score" id="red-total">0</div>
+            </div>
+        </div>
+
+        <div id="announce-banner">
+            <h1 id="announce-text">STRIKE!</h1>
+        </div>
+    </div>
+
+    <!-- 3D Canvas -->
+    <div id="webgl"></div>
+
+
+
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "../../node_modules/three/build/three.module.js"
+      }
+    }
+    </script>
+
+
+    <script>
+        let selectedPlayers = 1;
+        let selectedRounds = 10;
+
+        function selectPlayers(p) {
+            selectedPlayers = p;
+            document.getElementById('btn-1p').classList.add('selected');
+        }
+
+        function updateRounds(v) {
+            selectedRounds = parseInt(v);
+            document.getElementById('rounds-val').innerText = selectedRounds;
+        }
+
+
+function handleMenuClick() {
+    const playerState = activeScoreboard.state.t1;
+
+    if (selectedRounds > 3 && !playerState.finished && playerState.currentFrame < 3) {
+        alert("PLAY 3 FRAMES TO EXIT");
+        return;
+    }
+
+    if (lane22Entry) {
+        window.top.location.href = '/r15/';
+    } else {
+        window.location.href = window.location.pathname;
+    }
+}
+
+function handleResultsMenuClick() {
+    if (lane22Entry) {
+        window.top.location.href = '/r15/';
+    } else {
+        window.location.href = window.location.pathname;
+    }
+}
+
+
+
+
+        function showCredits() {
+            document.getElementById("credits-overlay").style.display = "flex";
+        }
+
+        function hideCredits() {
+            document.getElementById("credits-overlay").style.display = "none";
+        }
+
+        async function startClicked() {
+            let startButton = document.querySelector(".start-btn");
+
+            startButton.disabled = true;
+            startButton.innerText = "LOADING MEPE...";
+
+            try {
+
+                // COnnecting marker placements to lane encounter.
+                const { createStartConfig } =
+                    await import('../../r15/session/StartConfig.mjs');
+
+                const { readSessionProfile } =
+                    await import('../../r15/session/SessionProfile.mjs');
+
+                const sessionProfile = lane22Entry
+                    ? readSessionProfile()
+                    : undefined;
+
+
+                const startConfig = createStartConfig(sessionProfile);
+
+                window.startConfig = startConfig;
+
+                const playerNames = ["Sleepy", "Clutz", "Hiroller", "Jacob", "Frog"];
+                const playerName = playerNames[
+                    Math.floor(Math.random() * playerNames.length)
+                ];
+                document.getElementById("player-name").textContent = playerName;
+
+                loadMepeModel(function() {
+                    document.getElementById('start-menu').style.display = 'none';
+                    document.getElementById('overhead-scoreboard').style.display = 'flex';
+                    document.getElementById('menu-button').style.display = 'block';
+
+                    const lane = initGame(
+                        selectedPlayers,
+                        selectedRounds,
+                        startConfig
+                    );
+                    import('../../r15/scene/LaneSceneHost.mjs')
+                        .then(({ LaneSceneHost }) => {
+                            window.laneSceneHost = new LaneSceneHost(lane);
+                        })
+                        .catch(error => {
+                            console.error('LaneSceneHost adoption failed:', error);
+                        });
+                });
+            } catch (error) {
+                console.error('StartConfig initialization failed:', error);
+                startButton.disabled = false;
+                startButton.innerText = "BOWL NOW";
+            }
+        }
+
+
+    </script>
+
+    <!-- Game Logic Scripts (Strict Ordering) -->
+    <script src="../js/Score.js?v=13"></script>
+    <script src="../js/cameraLight.js?v=13"></script>
+    <script src="../js/ball.js?v=13"></script>
+    <script src="../js/animation.js?v=14"></script>
+    <script src="../js/pin.js?v=13"></script>
+    <script src="../js/init.js?v=13"></script>
+
+    <script>
+
+    const entryParams = new URLSearchParams(window.location.search);
+    const lane22Entry = entryParams.get('encounter') === 'lane22';
+    if (lane22Entry) {
+        document.title = 'Mepe Bowl — Lane 22';
+        document.querySelector('.menu-title').textContent = 'LANE 22';
+        document.getElementById('start-menu').style.display = 'none';
+    }
+    if (lane22Entry || entryParams.get('replay') === '1') {
+        window.addEventListener('load', startClicked, { once: true });
+    }
+
+    </script>
+</body>
+
+</html>
