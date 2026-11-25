@@ -55,11 +55,28 @@
   </style>
 </head>
 
+
+<script type="module">
+  const response = await fetch('./encounter__hello.json');
+
+  if (!response.ok) {
+    throw new Error('Encounter context unavailable');
+  }
+
+  const encounter = await response.json();
+
+  document.getElementById('greeting').textContent =
+    encounter.context.greeting;
+
+  console.log('Encounter:', encounter);
+</script>
+
+
 <body>
   <main id="stage">
     <section id="office-view" aria-label="Office">
       <div id="hello-sign">
-        <h1>HELLO</h1>
+        <h1 id="greeting"></h1>
       </div>
     </section>
   </main>

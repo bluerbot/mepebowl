@@ -1,0 +1,16 @@
+{
+  "id": "office.hello",
+  "name": "Office Hello",
+  "description": "A confirmation you have arrived at the Mepebowl Office Place",
+  "intent": "Establish a welcoming presence at the Office, as confirmation.",
+  "features": [
+    {
+      "id": "welcome",
+      "description": "A participant arriving at the Office Place is greted with a prop that confirms the Hello Intent"
+    }
+  ],
+  "context": {
+    "place": "Office",
+    "greeting": "HELLO"
+  }
+}
