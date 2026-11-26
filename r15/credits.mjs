@@ -52,6 +52,21 @@ style.textContent = `
 
     .credits-panel a { color: #00cfe8; }
 
+    .credits-office {
+      margin: 24px 0 0;
+      text-align: center;
+    }
+
+    .credits-panel .credits-office a {
+      color: #888;
+      font-size: 11px;
+      text-decoration: none;
+    }
+
+    .credits-panel .credits-office a:hover {
+      color: #bbb;
+    }
+    
     .credits-close {
       display: block;
       margin: 22px auto 0;
@@ -86,6 +101,10 @@ document.body.insertAdjacentHTML('beforeend', `
       <p>Three.js · Physijs · Ammo.js · ThreeBSP</p>
       <p>Stats.js — mrdoob</p>
       <p>dat.GUI — Data Arts Team, Google Creative Lab</p>
+
+      <p class="credits-office">
+        <a href="../office/index.html">Office</a>
+      </p>
 
       <button class="credits-close" id="hide-credits">CLOSE</button>
     </div>
