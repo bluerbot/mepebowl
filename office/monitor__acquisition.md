@@ -4,7 +4,7 @@
 **Accepted baseline:** `dev2 @ 8b780b5`  
 **Place:** Ron's Office  
 **Encounter:** Access Monitor  
-**Status:** private route and authenticated health verified; application changes pending deployment and browser acceptance
+**Status:** accepted — Android round trip and continuing traffic observations verified
 
 ## Acquired source projection
 
@@ -64,3 +64,7 @@ Both systemd units active: mepe-monitor.service (staging path, PID 301032, port 
 Tailscale Serve retained root -> 3022 and added /work-monitor/ -> 3302, tailnet only. Root, mounted dashboard and mounted health challenged unauthenticated requests with HTTP/2 401. Authenticated mounted health returned status ok, monitor online at 2026-11-27T01:31:32.080Z. No credentials recorded.
 
 Reciprocal declarations share coupling office-monitor.work. Office MONITOR reads its destination from the declaration; Work dashboard adds an OFFICE link. No metric changes. Work service restart and hosted browser round trip remain pending. Original service and staging must not be restarted or modified.
+
+## Closing acceptance
+
+Work acquired 9fb0025; node syntax check passed. The executable diff adds only the OFFICE anchor. Work Monitor restarted to PID 633858; original PID 301032 remained active. Both loopback ports and both tailnet-only routes were preserved. Authenticated dashboard returned the OFFICE anchor after an initial 401. Android initially encountered NXDOMAIN while disconnected; connecting Tailscale resolved access without server changes. Participant confirmed continuing hits and successful return to Office. Maclocal is not an established tailnet participant. Metric semantics and broader bowling regression acceptance remain deferred. The acquired blob identifies on-disk source, not proof of the original process's loaded bytes.
