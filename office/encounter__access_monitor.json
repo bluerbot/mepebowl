@@ -1,0 +1,32 @@
+{
+  "id": "office.access-monitor",
+  "name": "Access Monitor",
+  "description": "A situated encounter in Ron's Office through which a participant locates the existing private Mepe Bowl Monitor observatory.",
+  "intent": "Locate and access the existing Monitor while preserving its independent service and private access boundary.",
+  "features": [
+    {
+      "id": "monitor-access",
+      "description": "Office presents a MONITOR affordance that directs the participant to the existing private observatory."
+    },
+    {
+      "id": "return-office",
+      "description": "Participant can return from the Monitor to the Office Place."
+    }
+  ],
+  "context": {
+    "place": "Office",
+    "monitor": {
+      "participant": "Mepe Bowl Monitor",
+      "service": "mepe-bowl-monitor-work",
+      "localAddress": "127.0.0.1:3302",
+      "access": "Tailscale/private; HTTP Basic authentication",
+      "destination": "deployment-specific; not supplied by this encounter"
+    },
+    "preservation": [
+      "Monitor authentication remains in place",
+      "No monitor logs or credentials are surfaced in the public Office",
+      "No changes to R1.5 bowling navigation",
+      "Traffic classification reconciliation remains deferred"
+    ]
+  }
+}
