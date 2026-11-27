@@ -53,6 +53,14 @@
       letter-spacing: 0.16em;
     }
 
+    #office-monitor {
+      display: inline-block;
+      margin-top: 18px;
+      color: #f4dfad;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
     #office-back {
       position: absolute;
       bottom: 24px;
@@ -89,6 +97,18 @@
     encounter.context.greeting;
 
   console.log('Encounter:', encounter);
+
+  const accessResponse = await fetch('./encounter__access_monitor.json');
+  if (accessResponse.ok) {
+    const access = await accessResponse.json();
+    const path = access.context.coupling.pathing.access;
+    if (path.status === 'authenticated-health-verified' && path.destination) {
+      const link = document.getElementById('office-monitor');
+      link.href = path.destination;
+      link.hidden = false;
+      link.style.removeProperty("display");
+    }
+  }
 </script>
 
 
@@ -97,6 +117,7 @@
     <section id="office-view" aria-label="Office">
       <div id="hello-sign">
         <h1 id="greeting"></h1>
+        <a id="office-monitor" hidden style="display:none">MONITOR</a>
       </div>
     </section>
 
