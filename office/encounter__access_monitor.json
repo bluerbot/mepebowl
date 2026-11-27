@@ -19,10 +19,11 @@
       "unit": "mepe-monitor-work.service",
       "localAddress": "127.0.0.1:3302",
       "source": "/var/www/worldsphere/work/monitor/server.js",
-      "sourceBlob": "904a31286b6090aa0348002f5a5e74e8b92106ff",
+      "sourceBlob": "ed938e587fd0e1ef19f6c6c83462184008028610",
       "authentication": "HTTP Basic",
-      "observed": "active; unauthenticated /health returns 401",
-      "privateBrowserRoute": "https://worldsphere0.taile2b676.ts.net/work-monitor/"
+      "observed": "active; PID 633858 after targeted restart; authenticated health and Android dashboard verified",
+      "privateBrowserRoute": "https://worldsphere0.taile2b676.ts.net/work-monitor/",
+      "acquiredSourceBlob": "904a31286b6090aa0348002f5a5e74e8b92106ff"
     },
     "preservation": [
       "Monitor authentication remains in place",
@@ -53,14 +54,25 @@
       "pathing": {
         "access": {
           "status": "authenticated-health-verified",
-          "destination": "https://worldsphere0.taile2b676.ts.net/work-monitor/"
+          "destination": "https://worldsphere0.taile2b676.ts.net/work-monitor/",
+          "acceptance": "android-browser-verified"
         },
         "return": {
-          "status": "implemented-pending-browser-acceptance",
+          "status": "android-browser-verified",
           "destination": "https://work.mepebowl.fun/office/"
         }
       },
-      "history": "residue/monitor__tailscale_connectivity.md"
+      "history": "residue/monitor__tailscale_connectivity.md",
+      "acceptance": {
+        "status": "accepted",
+        "participant": "Android tailnet-connected browser",
+        "date": "2026-11-27 UTC",
+        "observations": [
+          "Office to Monitor traversal",
+          "continuing traffic observations",
+          "Monitor to Office return"
+        ]
+      }
     }
   }
 }
