@@ -6,27 +6,61 @@
   "features": [
     {
       "id": "monitor-access",
-      "description": "Office presents a MONITOR affordance that directs the participant to the existing private observatory."
+      "description": "Locate and traverse to the Work Monitor via a verified private path; pending route configuration."
     },
     {
-      "id": "return-office",
-      "description": "Participant can return from the Monitor to the Office Place."
+      "id": "office-arrival",
+      "description": "Receive a returning participant at Office."
     }
   ],
   "context": {
     "place": "Office",
     "monitor": {
-      "participant": "Mepe Bowl Monitor",
-      "service": "mepe-bowl-monitor-work",
+      "unit": "mepe-monitor-work.service",
       "localAddress": "127.0.0.1:3302",
-      "access": "Tailscale/private; HTTP Basic authentication",
-      "destination": "deployment-specific; not supplied by this encounter"
+      "source": "/var/www/worldsphere/work/monitor/server.js",
+      "sourceBlob": "904a31286b6090aa0348002f5a5e74e8b92106ff",
+      "authentication": "HTTP Basic",
+      "observed": "active; unauthenticated /health returns 401",
+      "privateBrowserRoute": null
     },
     "preservation": [
       "Monitor authentication remains in place",
       "No monitor logs or credentials are surfaced in the public Office",
       "No changes to R1.5 bowling navigation",
       "Traffic classification reconciliation remains deferred"
-    ]
+    ],
+    "coupling": {
+      "id": "office-monitor.work",
+      "from": {
+        "encounter": "office.access-monitor",
+        "affordance": "monitor-access"
+      },
+      "to": {
+        "encounter": "monitor.observe-work",
+        "affordance": "observe"
+      },
+      "return": {
+        "from": {
+          "encounter": "monitor.observe-work",
+          "affordance": "return-office"
+        },
+        "to": {
+          "encounter": "office.access-monitor",
+          "affordance": "office-arrival"
+        }
+      },
+      "pathing": {
+        "access": {
+          "status": "pending-private-route",
+          "destination": null
+        },
+        "return": {
+          "status": "proposed",
+          "destination": "https://work.mepebowl.fun/office/"
+        }
+      },
+      "history": "residue/monitor__tailscale_connectivity.md"
+    }
   }
 }
