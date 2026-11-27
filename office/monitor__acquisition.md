@@ -4,7 +4,7 @@
 **Accepted baseline:** `dev2 @ 8b780b5`  
 **Place:** Ron's Office  
 **Encounter:** Access Monitor  
-**Status:** declarative encounter established; operational servlet comparison and hosted access pending
+**Status:** private route and authenticated health verified; application changes pending deployment and browser acceptance
 
 ## Acquired source projection
 
@@ -36,9 +36,9 @@ Run on `worldsphere0`; do not print secrets:
 
 ```bash
 pm2 list
-pm2 describe mepe-monitor-work
+sudo systemctl show mepe-monitor-work.service -p ActiveState -p MainPID -p ExecStart -p WorkingDirectory
 ss -ltnp | grep ':3302'
-sha1sum /var/www/worldsphere/work/monitor/server.js
+git hash-object /var/www/worldsphere/work/monitor/server.js
 git -C /var/www/worldsphere/work status -sb
 git -C /var/www/worldsphere/work rev-parse --short HEAD
 sudo tailscale status
@@ -56,3 +56,11 @@ Record only service names, bound ports, Tailscale routing (redact private identi
 5. Revisit hosted FrontDoor/Credits/Office/BACK and bowling traversal acceptance not yet recorded in hydration 002.
 
 No Live or Staging mutation. No claim of hosted acceptance before exercised evidence.
+
+## Survey resolution — 2026-11-27 UTC
+
+Both systemd units active: mepe-monitor.service (staging path, PID 301032, port 3022) and mepe-monitor-work.service (work path, PID 301038, port 3302). Both on-disk source blobs matched Recursive0 before application changes. Original running port differs from the on-disk hardcoded port; do not restart original service. Both loopback health paths challenged unauthenticated requests with 401.
+
+Tailscale Serve retained root -> 3022 and added /work-monitor/ -> 3302, tailnet only. Root, mounted dashboard and mounted health challenged unauthenticated requests with HTTP/2 401. Authenticated mounted health returned status ok, monitor online at 2026-11-27T01:31:32.080Z. No credentials recorded.
+
+Reciprocal declarations share coupling office-monitor.work. Office MONITOR reads its destination from the declaration; Work dashboard adds an OFFICE link. No metric changes. Work service restart and hosted browser round trip remain pending. Original service and staging must not be restarted or modified.
