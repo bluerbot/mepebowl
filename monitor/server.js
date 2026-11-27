@@ -219,6 +219,7 @@ button {
     <div class="label" style="margin-bottom:10px">WorldSphere links</div>
     <ul style="list-style:none;margin:0;padding:0;display:grid;gap:10px">
       <li><a href="https://work.mepebowl.fun/">MepeBowl Work</a></li>
+      <li><a href="https://work.mepebowl.fun/office/">OFFICE</a></li>
     </ul>
   </nav>
 
