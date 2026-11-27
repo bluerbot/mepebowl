@@ -6,7 +6,7 @@
   "features": [
     {
       "id": "monitor-access",
-      "description": "Locate and traverse to the Work Monitor via a verified private path; pending route configuration."
+      "description": "Traverse to the registered private Work Monitor path; tailnet and HTTP Basic credentials required."
     },
     {
       "id": "office-arrival",
@@ -22,7 +22,7 @@
       "sourceBlob": "904a31286b6090aa0348002f5a5e74e8b92106ff",
       "authentication": "HTTP Basic",
       "observed": "active; unauthenticated /health returns 401",
-      "privateBrowserRoute": null
+      "privateBrowserRoute": "https://worldsphere0.taile2b676.ts.net/work-monitor/"
     },
     "preservation": [
       "Monitor authentication remains in place",
@@ -52,11 +52,11 @@
       },
       "pathing": {
         "access": {
-          "status": "pending-private-route",
-          "destination": null
+          "status": "authenticated-health-verified",
+          "destination": "https://worldsphere0.taile2b676.ts.net/work-monitor/"
         },
         "return": {
-          "status": "proposed",
+          "status": "implemented-pending-browser-acceptance",
           "destination": "https://work.mepebowl.fun/office/"
         }
       },
