@@ -1,0 +1,65 @@
+{
+  "id": "monitor.observe-work",
+  "name": "Observe Work Monitor",
+  "description": "Independent authenticated Work Monitor observation encounter.",
+  "intent": "Observe existing traffic metrics and afford return to Office without absorbing either participant.",
+  "features": [
+    {
+      "id": "observe",
+      "description": "Observe existing authenticated dashboard."
+    },
+    {
+      "id": "return-office",
+      "description": "Return to Office via proposed explicit path; not yet implemented."
+    }
+  ],
+  "context": {
+    "place": "Work Monitor",
+    "service": {
+      "unit": "mepe-monitor-work.service",
+      "localAddress": "127.0.0.1:3302",
+      "source": "/var/www/worldsphere/work/monitor/server.js",
+      "sourceBlob": "904a31286b6090aa0348002f5a5e74e8b92106ff",
+      "authentication": "HTTP Basic",
+      "observed": "active; unauthenticated /health returns 401",
+      "privateBrowserRoute": null
+    },
+    "coupling": {
+      "id": "office-monitor.work",
+      "from": {
+        "encounter": "office.access-monitor",
+        "affordance": "monitor-access"
+      },
+      "to": {
+        "encounter": "monitor.observe-work",
+        "affordance": "observe"
+      },
+      "return": {
+        "from": {
+          "encounter": "monitor.observe-work",
+          "affordance": "return-office"
+        },
+        "to": {
+          "encounter": "office.access-monitor",
+          "affordance": "office-arrival"
+        }
+      },
+      "pathing": {
+        "access": {
+          "status": "pending-private-route",
+          "destination": null
+        },
+        "return": {
+          "status": "proposed",
+          "destination": "https://work.mepebowl.fun/office/"
+        }
+      },
+      "history": "residue/monitor__tailscale_connectivity.md"
+    },
+    "preservation": [
+      "Original port 3022 Tailscale route remains unchanged",
+      "No public proxy or authentication bypass",
+      "Metric reconciliation deferred"
+    ]
+  }
+}
